@@ -1,12 +1,23 @@
 #pragma once
 
 #include <vector>
-#include <ct2rt.hpp>
-#include <dynamic_typing.hpp>
-#include <blob_types.hpp>
+#include <utility>
 
-using namespace DynamicTyping;
+#include <types.hpp>
+
 using namespace DynamicTyping::Types;
+
+struct sizes_t
+{
+    std::size_t integral_constants_size{};
+    std::size_t runtime_op_size{};
+
+    constexpr bool zeroed() const
+    {
+        std::array<std::byte, sizeof(sizes_t)> nullarr{};
+        return nullarr == std::bit_cast<std::array<std::byte, sizeof(sizes_t)>>(*this);
+    }
+};
 
 struct runtime_op_t {
     std::size_t i;
@@ -28,33 +39,13 @@ struct runtime_op_creator_t
     }
 };
 
-struct sizes_t
-{
-    std::size_t integral_constants_size{};
-    std::size_t runtime_op_size{};
-};
-
-template<sizes_t Sizes = {}>
-class Execution
+struct Compiletime
 {
     std::vector<std::pair<std::string_view, std::size_t>> integral_constants_indexes;
     std::vector<integer_t> integral_constants;
     std::vector<runtime_op_creator_t> ops;
 
-    static inline std::array<integer_t, Sizes.integral_constants_size> s_integral_constants{};
-    static inline std::array<runtime_op_t, Sizes.runtime_op_size> s_ops{};
-
-    friend struct runtime_op_t;
-
-public:
-    void run()
-    {
-        std::ranges::for_each(s_ops, [](auto &op){ op.template operator()<Execution>(); });
-    }
-
-    constexpr Execution() = default;
-
-    constexpr Execution(const auto& prog_body)
+    constexpr Compiletime(const auto& prog_body)
     {
         for (auto &body_item : prog_body)
         {
@@ -90,11 +81,5 @@ public:
             runtime_ops[op_i] = ops[op_i]();
         }
         return std::make_tuple(integral_constants_repr, runtime_ops);
-    }
-
-    Execution(const DynamicTyping::Types::Blob::CIsTuple auto& repr)
-    {
-        s_integral_constants = std::get<0>(repr);
-        s_ops = std::get<1>(repr);
     }
 };
