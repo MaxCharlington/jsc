@@ -17,14 +17,14 @@ class Execution : public std::conditional_t<Sizes.zeroed(), Compiletime, dummy>
     static inline std::array<integer_t, Sizes.integral_constants_size> s_integral_constants{};
     static inline std::array<var, Sizes.variables_size> s_variables{};
 
-    static inline std::array<runtime_op_t, Sizes.runtime_op_size> s_ops{};
+    static inline std::array<runtime_op_t<Execution>, Sizes.runtime_op_size> s_ops{};
 
-    friend struct runtime_op_t;
+    friend struct runtime_op_t<Execution>;
 
 public:
     void run()
     {
-        std::ranges::for_each(s_ops, [](auto &op){ op.template operator()<Execution>(); });
+        std::ranges::for_each(s_ops, [](auto &op){ op(); });
     }
 
     constexpr Execution(const auto& prog_body) : Compiletime{prog_body} {}

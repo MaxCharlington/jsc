@@ -30,13 +30,13 @@ enum class op_type
     , READ
 };
 
+template<class R>
 struct runtime_op_t {
     op_type type;
     std::size_t r_integral_constant_index{};
     std::size_t r_variable_index{};
     std::size_t l_variable_index{};
 
-    template<class R>
     void operator()()
     {
         if (type == op_type::LOG)
@@ -54,6 +54,9 @@ struct runtime_op_t {
     }
 };
 
+template<sizes_t>
+class Execution;
+
 struct Compiletime
 {
     struct runtime_op_creator_t
@@ -62,7 +65,8 @@ struct Compiletime
         std::string_view identifier_name{};
         std::string_view l_variable_name{};
 
-        constexpr runtime_op_t operator()(const Compiletime& ctx) const
+        template<sizes_t S>
+        constexpr runtime_op_t<Execution<S>> operator()(const Compiletime& ctx) const
         {
             if (type == op_type::LOG)
             {
@@ -154,10 +158,10 @@ struct Compiletime
 
         std::array<nullptr_t, S.variables_size> runtime_variables;  // TODO: transfer values
 
-        std::array<runtime_op_t, S.runtime_op_size> runtime_ops;
+        std::array<runtime_op_t<Execution<S>>, S.runtime_op_size> runtime_ops;
         for (size_t op_i = 0; op_i < S.runtime_op_size; op_i++)
         {
-            runtime_ops[op_i] = ops[op_i](*this);
+            runtime_ops[op_i] = ops[op_i].template operator()<S>(*this);
         }
         return std::make_tuple(integral_constants_repr, runtime_variables, runtime_ops);
     }
