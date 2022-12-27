@@ -9,10 +9,10 @@
 using namespace DynamicTyping;
 using namespace DynamicTyping::Types;
 
-struct Empty {};
+struct dummy {};
 
-template<sizes_t Sizes = {}>
-class Execution : public std::conditional_t<Sizes.zeroed(), Compiletime, Empty>
+template<sizes_t Sizes>
+class Execution : public std::conditional_t<Sizes.zeroed(), Compiletime, dummy>
 {
     static inline std::array<integer_t, Sizes.integral_constants_size> s_integral_constants{};
     static inline std::array<runtime_op_t, Sizes.runtime_op_size> s_ops{};
@@ -33,3 +33,11 @@ public:
         s_ops = std::get<1>(repr);
     }
 };
+
+// Runtime ececution
+template <typename ...T, std::size_t ...S>
+Execution(const std::tuple<std::array<T, S>...>& repr) -> Execution<sizes_t{S...}>;
+
+// Compiletime execution
+template<typename AST>
+Execution(const AST&) -> Execution<sizes_t{}>;

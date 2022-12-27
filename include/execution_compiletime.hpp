@@ -3,6 +3,7 @@
 #include <vector>
 #include <utility>
 
+#include <ast_impl.hpp>
 #include <types.hpp>
 
 using namespace DynamicTyping::Types;
