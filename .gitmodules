@@ -1,0 +1,3 @@
+[submodule "deps/dt"]
+	path = deps/dt
+	url = https://github.com/MaxCharlington/Dynamic-typing
