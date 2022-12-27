@@ -23,4 +23,4 @@ DT_INCLUDES="-I${SCRIPT_PATH}/../deps/dt/include"
 HELPERS_INCLUDES="-I${SCRIPT_PATH}/../deps/helpers"
 INCLUDES="-I${SCRIPT_PATH}/../include ${HELPERS_INCLUDES} ${DT_INCLUDES}"
 command -v g++ >/dev/null 2>&1 || { echo >&2 "json2cpp is required. Aborting."; exit 1; }
-g++ -std=c++2b ${INCLUDES} -I${TMP_PATH} ${SCRIPT_PATH}/prog.cpp -o ${TMP_PATH}/$2
+g++ -std=c++2b ${INCLUDES} -I${TMP_PATH} ${SCRIPT_PATH}/prog.cpp -o ${TMP_PATH}/$2 -O3
