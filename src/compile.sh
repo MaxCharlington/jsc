@@ -3,7 +3,7 @@ set -x
 set -e
 
 SCRIPT_PATH="$(dirname -- "${BASH_SOURCE[0]}")"
-TMP_PATH="${SCRIPT_PATH}/tmp"  # TODO: move to /tmp?
+TMP_PATH="${SCRIPT_PATH}/build"  # TODO: move to /tmp?
 
 rm -rf ${TMP_PATH}
 mkdir -p ${TMP_PATH}
@@ -19,6 +19,8 @@ json2cpp prog ${TMP_PATH}/ast.json ${TMP_PATH}/ast
 # TODO: Supports only g++. Move to cmake and add wasm generation support
 echo ---------- Compiling AST to exe ----------
 INSTALL_PATH="${SCRIPT_PATH}/../build/install/include"
-DT_INCLUDES="-I${SCRIPT_PATH}/../deps/dt/include -I${SCRIPT_PATH}/../deps/dt/deps/CppHelpers"
+DT_INCLUDES="-I${SCRIPT_PATH}/../deps/dt/include"
+HELPERS_INCLUDES="-I${SCRIPT_PATH}/../deps/helpers"
+INCLUDES="-I${SCRIPT_PATH}/../include ${HELPERS_INCLUDES} ${DT_INCLUDES}"
 command -v g++ >/dev/null 2>&1 || { echo >&2 "json2cpp is required. Aborting."; exit 1; }
-g++ -std=c++2b ${SCRIPT_PATH}/prog.cpp ${DT_INCLUDES} -I${TMP_PATH} -o $2
+g++ -std=c++2b ${INCLUDES} -I${TMP_PATH} ${SCRIPT_PATH}/prog.cpp -o ${TMP_PATH}/$2

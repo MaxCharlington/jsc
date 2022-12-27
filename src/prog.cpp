@@ -6,7 +6,7 @@ consteval auto prepare_runtime()  // -> std::array<std::function<void(void)>, CO
 {
     constexpr auto& prog = compiled_json::prog::impl::document;
     static_assert(prog["type"].get<std::string_view>() == "Program");
-    Runtime rntm{prog["body"]};
+    Execution rntm{prog["body"]};
     return to_runtime(rntm);
     // static_assert(prog["body"][0]["type"].get<std::string_view>() == "VariableDeclaration");
 }

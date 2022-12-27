@@ -1,11 +1,11 @@
 #pragma once
 
 #include <vector>
+#include <ct2rt.hpp>
 #include <dynamic_typing.hpp>
 
 using namespace DynamicTyping;
 using namespace DynamicTyping::Types;
-
 
 struct runtime_op {
     std::size_t i;
@@ -18,7 +18,7 @@ struct runtime_op {
 };
 
 template<std::size_t OpSize = 0, std::size_t IntSize = 0>
-class Runtime
+class Execution
 {
     struct runtime_op_creator
     {
@@ -35,9 +35,9 @@ public:
     std::vector<runtime_op_creator> ops;
     static std::array<integer_t, IntSize> s_integral_constants;
 
-    constexpr Runtime() = default;
+    constexpr Execution() = default;
 
-    constexpr Runtime(const auto& prog_body)
+    constexpr Execution(const auto& prog_body)
     {
         for (auto &body_item : prog_body)
         {
@@ -59,9 +59,9 @@ public:
     }
 };
 
-constexpr auto to_runtime(const Runtime<>& r)
+constexpr auto to_runtime(const Execution<>& r)
 {
     auto repr = r.to_runtime();
     std::array<runtime_op, 1> ops = {r.ops[0]()};
-    return std::make_tuple(Runtime<1, 1>{}, ops, repr);
+    return std::make_tuple(Execution<1, 1>{}, ops, repr);
 }
