@@ -29,18 +29,22 @@ struct runtime_op_t {
     }
 };
 
-struct runtime_op_creator_t
-{
-    std::string_view name;
-
-    constexpr runtime_op_t operator()() const
-    {
-        return runtime_op_t{0};
-    }
-};
-
 struct Compiletime
 {
+    struct runtime_op_creator_t
+    {
+        std::string_view integer_constant_name{};
+
+        constexpr runtime_op_t operator()(const Compiletime& ctx) const
+        {
+            std::size_t integral_constant_index = std::ranges::find_if(
+                ctx.integral_constants_indexes,
+                [&](const std::pair<std::string_view, std::size_t>& pair) { return pair.first == integer_constant_name; }
+            )->second;
+            return runtime_op_t{integral_constant_index};
+        }
+    };
+
     std::vector<std::pair<std::string_view, std::size_t>> integral_constants_indexes;
     std::vector<integer_t> integral_constants;
     std::vector<runtime_op_creator_t> ops;
@@ -78,7 +82,7 @@ struct Compiletime
         std::array<runtime_op_t, S.runtime_op_size> runtime_ops;
         for (size_t op_i = 0; op_i < S.runtime_op_size; op_i++)
         {
-            runtime_ops[op_i] = ops[op_i]();
+            runtime_ops[op_i] = ops[op_i](*this);
         }
         return std::make_tuple(integral_constants_repr, runtime_ops);
     }

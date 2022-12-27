@@ -13,6 +13,6 @@ consteval auto create_execution_context()
 int main()
 {
     constexpr auto execution_context_repr = to_runtime<create_execution_context>();
-    Execution<{1, 1}> e{execution_context_repr};
+    Execution<{2, 1}> e{execution_context_repr};
     e.run();
 }
