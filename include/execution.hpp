@@ -2,7 +2,6 @@
 
 #include <ct2rt.hpp>
 #include <dynamic_typing.hpp>
-#include <blob_types.hpp>
 
 #include "execution_compiletime.hpp"
 

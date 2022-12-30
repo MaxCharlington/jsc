@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const { exit } = require('process');
 const { parse } = require('abstract-syntax-tree')
 const fs = require('fs');

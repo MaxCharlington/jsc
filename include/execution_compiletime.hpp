@@ -5,7 +5,7 @@
 #include <utility>
 
 #include <ast_impl.hpp>
-#include <types.hpp>
+#include <dynamic_typing.hpp>
 
 using namespace DynamicTyping;
 using namespace DynamicTyping::Types;

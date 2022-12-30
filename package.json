@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/MaxCharlington/Dynamic-typing#readme",
   "dependencies": {
-    "abstract-syntax-tree": "^2.20.6"
+    "abstract-syntax-tree": "^2.20.6",
+    "commander": "^9.4.1"
   }
 }
