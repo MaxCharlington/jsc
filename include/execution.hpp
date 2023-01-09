@@ -31,6 +31,7 @@ public:
     Execution(const DynamicTyping::Types::Blob::CIsTuple auto& repr)
     {
         s_integral_constants = std::get<0>(repr);
+        // variables
         s_ops = std::get<2>(repr);
     }
 };

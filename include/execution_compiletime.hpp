@@ -141,7 +141,13 @@ struct Compiletime
         }
     }
 
-    constexpr auto sizes()
+    constexpr std::size_t sizes_count() const
+    {
+        return 0;  // has no effect, just implements API
+    }
+
+    template<std::size_t>
+    constexpr auto sizes() const
     {
         return sizes_t{
             integral_constants.size(),
@@ -151,7 +157,7 @@ struct Compiletime
     }
 
     template<sizes_t S>
-    constexpr auto serialize()
+    constexpr auto serialize() const
     {
         std::array<integer_t, S.integral_constants_size> integral_constants_repr;
         std::copy_n(integral_constants.data(), S.integral_constants_size, integral_constants_repr.data());
