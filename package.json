@@ -1,14 +1,17 @@
 {
-  "name": "dynamic-typing",
+  "name": "jsc",
   "version": "0.1.0",
-  "description": "",
+  "description": "JavaScript compiler that creates executable form .js file using compile time AST parsing and C++ compiler",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "build": "cmake -B build .; cmake --build build/",
+    "build": "cmake -B build . -DCMAKE_INSTALL_PREFIX=build/install && cmake --build build/ --config Release",
+    "build_generate_json_ast": "pkg . --public-packages \"*\" --compress GZip -t host -o build/generate_json_ast",
+    "install": "cmake --install build/ --config Release",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": "src/generate_json_ast.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MaxCharlington/Dynamic-typing.git"
@@ -21,6 +24,7 @@
   "homepage": "https://github.com/MaxCharlington/Dynamic-typing#readme",
   "dependencies": {
     "abstract-syntax-tree": "^2.20.6",
-    "commander": "^9.4.1"
+    "commander": "^9.4.1",
+    "pkg": "^5.8.0"
   }
 }

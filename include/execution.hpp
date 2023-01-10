@@ -1,4 +1,5 @@
-#pragma once
+#ifndef EXEC_HPP
+#define EXEC_HPP
 
 #include <ct2rt.hpp>
 #include <dynamic_typing.hpp>
@@ -43,3 +44,5 @@ Execution(const std::tuple<std::array<T, S>...>& repr) -> Execution<sizes_t{S...
 // Compiletime execution
 template<typename AST>
 Execution(const AST&) -> Execution<sizes_t{}>;
+
+#endif  // EXEC_HPP

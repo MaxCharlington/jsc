@@ -1,4 +1,5 @@
-#pragma once
+#ifndef EXEC_CP_HPP
+#define EXEC_CP_HPP
 
 #include <cctype>
 #include <vector>
@@ -172,3 +173,5 @@ struct Compiletime
         return std::make_tuple(integral_constants_repr, runtime_variables, runtime_ops);
     }
 };
+
+#endif  // EXEC_CP_HPP

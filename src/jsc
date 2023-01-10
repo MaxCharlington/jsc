@@ -11,8 +11,7 @@ mkdir -p ${TMP_PATH}
 touch ${LOG_PATH}
 
 echo -e "> Generating AST json"
-command -v node &> /dev/null || { echo >&2 "node is required. Aborting."; exit 1; }
-${SCRIPT_PATH}/generate_json_ast.js $1 ${TMP_PATH}/ast.json &> ${LOG_PATH}
+${SCRIPT_PATH}/../build/generate_json_ast $1 ${TMP_PATH}/ast.json &> ${LOG_PATH}
 
 echo -e "> Generating AST c++ constexpr representation"
 command -v json2cpp &> /dev/null || { echo >&2 "json2cpp is required. Aborting."; exit 1; }
