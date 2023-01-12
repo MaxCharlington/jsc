@@ -4,3 +4,4 @@ build/
 *.gch
 node_modules
 build/
+conanfile.txt

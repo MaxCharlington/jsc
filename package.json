@@ -6,10 +6,11 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "cmake -B build . -DCMAKE_INSTALL_PREFIX=build/install && cmake --build build/ --config Release",
-    "build_generate_json_ast": "pkg . --public-packages \"*\" --compress GZip -t host -o build/generate_json_ast",
-    "install": "cmake --install build/ --config Release",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prebuild": "cp deps/json2cpp/conanfile.txt .",
+    "build": "cmake -B build . -DCMAKE_INSTALL_PREFIX=build/install && cmake --build build/ --config Release --parallel 4",
+    "postbuild": "rm conanfile.txt",
+    "pack": "cmake --install build/ --config Release",
+    "rm": "rm -rf build"
   },
   "bin": "src/generate_json_ast.js",
   "repository": {

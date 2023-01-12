@@ -4,3 +4,9 @@
 [submodule "deps/helpers"]
 	path = deps/helpers
 	url = https://github.com/MaxCharlington/CppHelpers
+[submodule "deps/cest"]
+	path = deps/cest
+	url = https://github.com/pkeir/cest
+[submodule "deps/json2cpp"]
+	path = deps/json2cpp
+	url = https://github.com/lefticus/json2cpp
