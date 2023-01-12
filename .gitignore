@@ -5,3 +5,6 @@ build/
 node_modules
 build/
 conanfile.txt
+log.html
+report.html
+output.xml

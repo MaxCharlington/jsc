@@ -6,6 +6,7 @@
     "test": "tests"
   },
   "scripts": {
+    "postinstall": "pip3 install -r requirements.txt",
     "prebuild": "cp deps/json2cpp/conanfile.txt .",
     "build": "cmake -B build . -DCMAKE_INSTALL_PREFIX=build/install && cmake --build build/ --config Release --parallel 4",
     "postbuild": "rm conanfile.txt",
