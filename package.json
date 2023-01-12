@@ -2,31 +2,35 @@
   "name": "jsc",
   "version": "0.1.0",
   "description": "JavaScript compiler that creates executable form .js file using compile time AST parsing and C++ compiler",
-  "directories": {
-    "test": "tests"
-  },
   "scripts": {
-    "postinstall": "pip3 install -r requirements.txt",
+    "preinstall": "pip3.10 --version && g++-12 --version && cmake --version || exit 1",
+    "postinstall": "pip3.10 install -r requirements.txt",
     "prebuild": "cp deps/json2cpp/conanfile.txt .",
     "build": "cmake -B build . -DCMAKE_INSTALL_PREFIX=build/install && cmake --build build/ --config Release --parallel 4",
     "postbuild": "rm conanfile.txt",
-    "pack": "cmake --install build/ --config Release",
+    "package": "cmake --install build/ --config Release",
     "rm": "rm -rf build"
   },
-  "bin": "src/generate_json_ast.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MaxCharlington/Dynamic-typing.git"
+    "url": "git+https://github.com/MaxCharlington/jsc.git"
   },
   "author": "MaxCharlington",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/MaxCharlington/Dynamic-typing/issues"
+    "url": "https://github.com/MaxCharlington/jsc/issues"
   },
-  "homepage": "https://github.com/MaxCharlington/Dynamic-typing#readme",
+  "homepage": "https://github.com/MaxCharlington/jsc#readme",
   "dependencies": {
     "abstract-syntax-tree": "^2.20.6",
     "commander": "^9.4.1",
     "pkg": "^5.8.0"
-  }
+  },
+  "engines": {
+    "node": ">=16.19.0",
+    "npm": ">=8.19.0"
+  },
+  "os": [
+    "linux"
+  ]
 }

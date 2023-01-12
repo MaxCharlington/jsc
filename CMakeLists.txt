@@ -5,7 +5,7 @@ project(jsc)
 add_custom_target(generate_json_ast ALL)
 
 add_custom_command(TARGET generate_json_ast
-    COMMAND pkg . --compress GZip -t host -o ${CMAKE_BINARY_DIR}/generate_json_ast
+    COMMAND pkg src/generate_json_ast.js --compress GZip -t host -o ${CMAKE_BINARY_DIR}/generate_json_ast
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     DEPENDS src/generate_json_ast.js
     VERBATIM
@@ -26,7 +26,7 @@ install(FILES
 install(FILES
         src/CMakeLists.txt
         src/prog.cpp
-        DESTINATION share/jscompiler)
+        DESTINATION etc/jscompiler)
 
 install(FILES
         ${CMAKE_BINARY_DIR}/deps/json2cpp/src/json2cpp
