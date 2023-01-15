@@ -4,7 +4,8 @@
 consteval auto create_execution_context()
 {
     constexpr auto& prog = compiled_json::prog::impl::document;
-    static_assert(prog["type"].get<std::string_view>() == "Program");
+    static_assert(prog["type"].get<std::string_view>() == "Program", "Invalid JSON AST");
+    static_assert(not prog["body"].empty(), "Program body is empty");
     Execution rntm{prog["body"]};
     // ... calcs
     return [=]{ return rntm; };
