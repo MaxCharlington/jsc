@@ -6,9 +6,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CMAKE_COMMAND} -E time")
 set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK "${CMAKE_COMMAND} -E time")
 
-set(PRECOMPILE_HEADER
-    ../deps/dt/include/dynamic_typing.hpp)
-
 set(SOURCE_FILES
 	prog.cpp
 	${PRECOMPILE_HEADER}
@@ -17,9 +14,6 @@ set(SOURCE_FILES
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
-target_precompile_headers(${PROJECT_NAME} PRIVATE ${PRECOMPILE_HEADER})
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_BINARY_DIR}
-    ../include
-    ../deps/dt/include/
-    ../deps/helpers)
+    ../../include/jscompiler)

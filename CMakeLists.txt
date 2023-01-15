@@ -11,7 +11,7 @@ add_custom_command(TARGET generate_json_ast
     VERBATIM
 )
 
-install(FILES src/jsc DESTINATION bin)
+install(PROGRAMS src/jsc DESTINATION bin)
 
 install(FILES
         deps/helpers/ct2rt.hpp
@@ -28,7 +28,7 @@ install(FILES
         src/prog.cpp
         DESTINATION etc/jscompiler)
 
-install(FILES
+install(PROGRAMS
         ${CMAKE_BINARY_DIR}/deps/json2cpp/src/json2cpp
         ${CMAKE_BINARY_DIR}/generate_json_ast
         DESTINATION bin/jscompiler)
