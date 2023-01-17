@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const { exit } = require('process');
-const { parse } = require('abstract-syntax-tree')
+const acorn = require("acorn");
 const fs = require('fs');
 
 const args = process.argv.slice(2);
@@ -19,7 +19,14 @@ catch (err)
     exit(1);
 }
 
-const tree = parse(source);
+const tree = acorn.parse(
+    source,
+    {
+        ecmaVersion: 6,
+        sourceType: "script",
+        locations: true
+    }
+);
 
 try
 {

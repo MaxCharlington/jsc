@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/MaxCharlington/jsc#readme",
   "dependencies": {
-    "abstract-syntax-tree": "^2.20.6",
+    "acorn": "^8.8.1",
     "commander": "^9.4.1",
     "pkg": "^5.8.0"
   },
