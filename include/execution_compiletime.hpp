@@ -5,7 +5,7 @@
 #include <vector>
 #include <utility>
 
-#include <ast_impl.hpp>
+#include <estree.hpp>
 #include <dynamic_typing.hpp>
 
 using namespace DynamicTyping;
@@ -108,6 +108,7 @@ struct Compiletime
         for (auto &body_item : prog_body)
         {
             // TODO: extract parsing
+            auto item = AST::Node::make(body_item);
             if (body_item["type"].template get<std::string_view>() == "VariableDeclaration")
             {
                 if (body_item["kind"].template get<std::string_view>() == "const")
