@@ -98,6 +98,8 @@ struct Compiletime
     std::vector<std::pair<std::string_view, std::size_t>> integral_constants_indexes;
     std::vector<integer_t> integral_constants;
 
+    std::vector<std::string_view> null_constants;
+
     std::vector<std::pair<std::string_view, std::size_t>> variables_indexes;
     std::vector<var> variables;
 
@@ -117,6 +119,10 @@ struct Compiletime
                     {
                         integral_constants.emplace_back(body_item["declarations"][0]["init"]["value"].template get<integer_t>());
                         integral_constants_indexes.emplace_back(body_item["declarations"][0]["id"]["name"].template get<std::string_view>(), integral_constants.size() - 1);
+                    }
+                    if (body_item["declarations"][0]["init"]["value"].is_null())
+                    {
+                        null_constants.emplace_back(body_item["declarations"][0]["id"]["name"].template get<std::string_view>());
                     }
                 }
                 else if (body_item["kind"].template get<std::string_view>() == "let")

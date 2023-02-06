@@ -38,6 +38,9 @@ install(DIRECTORY
         deps/dt/include/
         DESTINATION include/jscompiler)
 
+install(DIRECTORY
+        deps/json2cpp/include/
+        DESTINATION include)
 
 # overwrite install() command with a dummy macro that is a nop
 macro (install)
