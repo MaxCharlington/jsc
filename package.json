@@ -8,7 +8,7 @@
     "prebuild": "cp deps/json2cpp/conanfile.txt .",
     "build": "cmake -B build . -DCMAKE_INSTALL_PREFIX=build/install && cmake --build build/ --config Release --parallel 4",
     "postbuild": "rm conanfile.txt",
-    "package": "cmake --install build/ --config Release",
+    "package": "cmake --install build/ --config Release && cpack --config build/CPackConfig.cmake -B build/",
     "rm": "rm -rf build"
   },
   "repository": {

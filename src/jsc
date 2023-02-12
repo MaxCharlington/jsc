@@ -14,7 +14,7 @@ echo -e "> Generating AST json"
 ${SCRIPT_PATH}/jscompiler/generate_json_ast $1 ${TMP_PATH}/ast.json &> ${LOG_PATH}
 
 echo -e "> Generating AST c++ constexpr representation"
-command -v json2cpp &> /dev/null || { echo >&2 "json2cpp is required. Aborting."; exit 1; }
+command -v ${SCRIPT_PATH}/jscompiler/json2cpp &> /dev/null || { echo >&2 "json2cpp is required. Aborting."; exit 1; }
 ${SCRIPT_PATH}/jscompiler/json2cpp prog ${TMP_PATH}/ast.json ${TMP_PATH}/ast &> ${LOG_PATH}
 
 echo -e "> Compiling AST to exe"

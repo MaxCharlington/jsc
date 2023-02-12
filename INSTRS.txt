@@ -1,2 +1,0 @@
-Deps:
-gcc>=12, clang>15, node>=16, cmake>=3.22, python3, pip3

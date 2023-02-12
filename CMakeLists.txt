@@ -5,7 +5,7 @@ project(jsc VERSION 0.1.0.0)
 add_custom_target(generate_json_ast ALL)
 
 add_custom_command(TARGET generate_json_ast
-    COMMAND pkg src/generate_json_ast.js --compress GZip -t host -o ${CMAKE_BINARY_DIR}/generate_json_ast
+    COMMAND pkg src/generate_json_ast.js --compress GZip -t node16-linux -o ${CMAKE_BINARY_DIR}/generate_json_ast
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     DEPENDS src/generate_json_ast.js
     VERBATIM
@@ -18,10 +18,17 @@ install(FILES
         deps/helpers/overloaded.hpp
         deps/helpers/remove_all_const.hpp
         deps/helpers/template_strings.hpp
-        deps/cest/include/cest/string.hpp
-        deps/cest/include/cest/ostream.hpp
-        deps/cest/include/cest/runtime_ostream.hpp
         DESTINATION include/jscompiler)
+
+install(FILES
+        deps/cest/include/cest/string.hpp
+        deps/cest/include/cest/ios.hpp
+        deps/cest/include/cest/ios_base.hpp
+        deps/cest/include/cest/basic_ios.hpp
+        deps/cest/include/cest/ostream.hpp
+        deps/cest/include/cest/streambuf.hpp
+        deps/cest/include/cest/runtime_ostream.hpp
+        DESTINATION include/cest)
 
 install(FILES
         src/CMakeLists.txt
