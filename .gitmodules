@@ -7,6 +7,3 @@
 [submodule "deps/cest"]
 	path = deps/cest
 	url = https://github.com/pkeir/cest
-[submodule "json2cpp"]
-	path = deps/json2cpp
-	url = https://github.com/MaxCharlington/json2cpp
