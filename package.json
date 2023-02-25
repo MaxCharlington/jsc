@@ -1,16 +1,7 @@
 {
   "name": "jsc",
   "version": "0.1.0",
-  "description": "JavaScript compiler that creates executable form .js file using compile time AST parsing and C++ compiler",
-  "scripts": {
-    "preinstall": "pip3.10 --version && g++-12 --version && cmake --version || exit 1",
-    "postinstall": "pip3.10 install -r requirements.txt",
-    "prebuild": "cp deps/json2cpp/conanfile.txt .",
-    "build": "cmake -B build . -DCMAKE_INSTALL_PREFIX=build/install && cmake --build build/ --config Release --parallel 4",
-    "postbuild": "rm conanfile.txt",
-    "package": "cmake --install build/ --config Release && cpack --config build/CPackConfig.cmake -B build/",
-    "rm": "rm -rf build"
-  },
+  "description": "JavaScript compiler that creates executable form .js file using C++ compiler",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MaxCharlington/jsc.git"
@@ -21,14 +12,30 @@
     "url": "https://github.com/MaxCharlington/jsc/issues"
   },
   "homepage": "https://github.com/MaxCharlington/jsc#readme",
+  "type": "module",
+  "bin": {
+    "app": "index.js"
+  },
+  "scripts": {
+    "preinstall": "g++-12 --version && cmake --version || exit 1",
+    "package": "cmake -B build . -DCMAKE_INSTALL_PREFIX=build/install && cmake --build build/ --config Release --parallel 4 && cmake --install build/ --config Release && cpack --config build/CPackConfig.cmake -B build/"
+  },
   "dependencies": {
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.0",
+    "@babel/preset-env": "^7.20.2",
     "acorn": "^8.8.1",
+    "acorn-walk": "^8.2.0",
+    "clang-format": "^1.8.0",
     "commander": "^9.4.1",
     "pkg": "^5.8.0"
   },
   "engines": {
     "node": ">=16.19.0",
     "npm": ">=8.19.0"
+  },
+  "pkg": {
+    "scripts": "src/**/*.js"
   },
   "os": [
     "linux"
