@@ -1,7 +1,7 @@
-import * as Acorn from 'acorn'
-import WalkAST from './walker.js'
-import OptimizeAST from './optimizer.js'
-import GenerateCode from './generator.js'
+import * as Acorn from "acorn";
+import WalkAST from "./walker.js";
+import OptimizeAST from "./optimizer.js";
+import GenerateCode from "./generator.js";
 
 export default function Transpile (code, options = {}) {
     const ast = Acorn.parse(code, {
@@ -12,19 +12,19 @@ export default function Transpile (code, options = {}) {
     try {
         WalkAST(ast);
     } catch (cause) {
-        console.error(new Error('Failed to transpile', { cause }));
+        console.error(new Error("Failed to transpile", { cause }));
     }
     try {
         OptimizeAST(ast);
     } catch (cause) {
-        console.error(new Error('Failed to optimize', { cause }));
+        console.error(new Error("Failed to optimize", { cause }));
     }
     const modified_ast_str = JSON.stringify(ast, null, 4);
     let cpp_source = "";
     try {
         cpp_source = GenerateCode(ast);
     } catch (cause) {
-        console.error(new Error('Code generation failed', { cause }));
+        console.error(new Error("Code generation failed", { cause }));
     }
     return [base_ast_str, modified_ast_str, cpp_source];
 }

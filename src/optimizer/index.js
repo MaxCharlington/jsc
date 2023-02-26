@@ -1,3 +1,3 @@
-export * from './BinaryExpression.js'
-export * from './Literal.js'
-export * from './VariableDeclaration.js'
+export * from "./BinaryExpression.js";
+export * from "./Literal.js";
+export * from "./VariableDeclaration.js";
