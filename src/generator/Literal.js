@@ -1,9 +1,9 @@
 export function Literal (leaf) {
   if (typeof leaf.value === 'string') {
-    return leaf.raw || `"${leaf.value.replace(/\\/g, '\\\\').replace(/\"/g, '\\\"')}"`
+    return `"${leaf.value}"` || `"${leaf.value.replace(/\\/g, '\\\\').replace(/\"/g, '\\\"')}"`
   }
   if (leaf.value === null) {
-    return `nullptr`
+    return 'nullptr'
   }
   return leaf.raw !== undefined ? leaf.raw : String(leaf.value)
 }

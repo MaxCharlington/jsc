@@ -4,6 +4,7 @@ const defaultState = {
   strictMode: true
 }
 
+// Generates c++ code based on transpiled AST and applied optimizations
 export default function GenerateCode (tree, options) {
   function GenerateCodeStateful (leaf) {
     const cl = Generator[leaf.type]
