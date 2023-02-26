@@ -1,25 +1,25 @@
-import { program as cli } from 'commander'
-import { createReadStream, createWriteStream, rm, mkdir } from 'fs'
-import { compile_cpp, format_cpp, outputFullStream, readFullStream } from './src/compiler.js';
+import { program as cli } from "commander";
+import { createReadStream, createWriteStream, rm, mkdir } from "fs";
+import { compile_cpp, format_cpp, outputFullStream, readFullStream } from "./src/compiler.js";
 import path from "node:path";
 
-import Transpile from './src/transpiler.js'
+import Transpile from "./src/transpiler.js";
 
 const TMP_PATH = "/tmp/jsc-build";
 
 cli
-  .name('jsc')
-  .description('JavaScript compiler')
-  .version('0.1.0');
+    .name("jsc")
+    .description("JavaScript compiler")
+    .version("0.1.0");
 
 let inputFilePath;
 cli
-  .argument('<inputFile>', 'JavaScript source file to compile')
-  .option('-d, --debug', 'emit debug files')
-  .option('-o, --output <path>', 'executable path', 'a.out')
-  .action((inputFile) => {
-    inputFilePath = inputFile;
-  });
+    .argument("<inputFile>", "JavaScript source file to compile")
+    .option("-d, --debug", "emit debug files")
+    .option("-o, --output <path>", "executable path", "a.out")
+    .action((inputFile) => {
+        inputFilePath = inputFile;
+    });
 
 cli.parse();
 const cli_args = cli.opts();
@@ -32,29 +32,29 @@ cli_args.inputFile = inputFilePath;
 // });
 await mkdir(TMP_PATH, () => {});
 
-const cppSourcePath = path.join(TMP_PATH, path.basename(cli_args.inputFile) + '.cpp');
+const cppSourcePath = path.join(TMP_PATH, path.basename(cli_args.inputFile) + ".cpp");
 const outputCodeStream = !cli_args.output ? process.stdout : createWriteStream(cppSourcePath);
 
 // Read input
 const inputStream = createReadStream(cli_args.inputFile);
 const inputBuffer = await readFullStream(inputStream);
 
-const [base_ast, transpiled_ast, code] = Transpile(inputBuffer.toString('utf-8'));
+const [base_ast, transpiled_ast, code] = Transpile(inputBuffer.toString("utf-8"));
 
 // Write
 if (cli_args.debug) {
-  const jsBaseASTPath = path.join(TMP_PATH, path.basename(cli_args.inputFile) + '.base.ast.json');
-  let outputASTStream = !cli_args.output ? process.stdout : createWriteStream(jsBaseASTPath);
-  await outputFullStream(outputASTStream, base_ast);
+    const jsBaseASTPath = path.join(TMP_PATH, path.basename(cli_args.inputFile) + ".base.ast.json");
+    let outputASTStream = !cli_args.output ? process.stdout : createWriteStream(jsBaseASTPath);
+    await outputFullStream(outputASTStream, base_ast);
 
-  const jsTranspiledASTPath = path.join(TMP_PATH, path.basename(cli_args.inputFile) + '.transpiled.ast.json');
-  outputASTStream = !cli_args.output ? process.stdout : createWriteStream(jsTranspiledASTPath);
-  await outputFullStream(outputASTStream, transpiled_ast);
+    const jsTranspiledASTPath = path.join(TMP_PATH, path.basename(cli_args.inputFile) + ".transpiled.ast.json");
+    outputASTStream = !cli_args.output ? process.stdout : createWriteStream(jsTranspiledASTPath);
+    await outputFullStream(outputASTStream, transpiled_ast);
 }
 await outputFullStream(outputCodeStream, code);
 
 if (cli_args.debug) {
-  format_cpp(cppSourcePath);
+    format_cpp(cppSourcePath);
 }
 
 compile_cpp(cppSourcePath, cli_args.output);
