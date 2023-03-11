@@ -1,5 +1,5 @@
 export function FunctionExpression(leaf, toString) {
-    let str = "[](";
+    let str = "[=](";
     for (let i = 0; i < leaf.params.length; i++) {
         str += `auto ${toString(leaf.params[i])}=arguments[${i}];`;
     }
