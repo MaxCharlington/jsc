@@ -1,0 +1,16 @@
+let a = 1;
+console.log(a);
+let b = 1.2;
+console.log(b);
+let c = "asdasdasd";
+console.log(c);
+let d = "asdasdasd";
+console.log(d);
+let e = null;
+console.log(e);
+let f = undefined;
+console.log(f);
+let g = NaN;
+console.log(g);
+let h;
+console.log(h);

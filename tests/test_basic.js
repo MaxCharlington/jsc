@@ -23,7 +23,7 @@ function test_with_file(inputFile) {
     return 0;
 }
 
-test("Variable declaration", async () => {
+test("Variable declaration", async (t) => {
     // await t.test('var', (t) => {
     //     assert.strictEqual(1, 1);
     // });
@@ -37,7 +37,7 @@ test("Variable declaration", async () => {
     });
 });
 
-test("Array", async (t) => {
+test("Array", async () => {
     assert.strictEqual(0, test_with_file("./sources/array.js"));
 });
 
@@ -45,4 +45,8 @@ test("Function declaration", async (t) => {
     await t.test("function", () => {
         assert.strictEqual(0, test_with_file("./sources/function.js"));
     });
+});
+
+test("console", async () => {
+    assert.strictEqual(0, test_with_file("./sources/console.js"));
 });

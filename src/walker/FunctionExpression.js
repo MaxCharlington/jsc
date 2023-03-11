@@ -14,7 +14,7 @@ export function FunctionExpression (leaf) {
     if (!body.length || body[body.length - 1].type !== "ReturnStatement") {
         body.push({
             type: "ReturnStatement",
-            argument: null
+            argument: undefined
         });
     }
 }
