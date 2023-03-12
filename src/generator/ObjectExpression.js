@@ -1,17 +1,13 @@
 export function Property (leaf, toString) {
-    return `NectarCore::Type::pair_t{(std::string)(${
-        toString(leaf.key)
-    }),(NectarCore::VAR)(${
-        toString(leaf.value)
-    })}`;
+    return `DynamicTyping::field_t{"${toString(leaf.key)}", ${toString(leaf.value)}}`;
 }
 
 export function ObjectExpression (leaf, toString) {
-    if (!leaf.properties.length) return "new NectarCore::Class::Object()";
-    return `new NectarCore::Class::Object(NectarCore::Type::object_t{${
+    if (!leaf.properties.length) return "DynamicTyping::object_t()";
+    return `DynamicTyping::object_t{${
         toString({
             type: "SequenceExpression",
             expressions: leaf.properties
         })
-    }})`;
+    }}`;
 }
