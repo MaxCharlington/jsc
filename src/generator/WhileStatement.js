@@ -3,5 +3,5 @@ export function WhileStatement (leaf, toString) {
 }
 
 export function DoWhileStatement (leaf, toString) {
-    return `do ${toString(leaf.body)} while(${toString(leaf.test)})`;
+    return `do ${toString(leaf.body)} while(${toString(leaf.test)});`;
 }

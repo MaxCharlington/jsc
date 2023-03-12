@@ -37,6 +37,24 @@ test("Variable declaration", async (t) => {
     });
 });
 
+test("Loop", async (t) => {
+    await t.test("for", () => {
+        assert.strictEqual(0, test_with_file("./sources/loop/for.js"));
+    });
+    await t.test("for_of", () => {
+        assert.strictEqual(0, test_with_file("./sources/loop/for_of.js"));
+    });
+    // await t.test("for_in", () => {
+    //     assert.strictEqual(0, test_with_file("./sources/loop/for_in.js"));
+    // });
+    await t.test("while", () => {
+        assert.strictEqual(0, test_with_file("./sources/loop/while.js"));
+    });
+    await t.test("do_while", () => {
+        assert.strictEqual(0, test_with_file("./sources/loop/do_while.js"));
+    });
+});
+
 test("Array", async () => {
     assert.strictEqual(0, test_with_file("./sources/array.js"));
 });
