@@ -1,4 +1,7 @@
 export function FunctionDeclaration(leaf, state) {
+    if (!leaf.cpp_declares) leaf.cpp_declares = [];
+    if (!leaf.cpp_uses) leaf.cpp_uses = [];
+
     let is_capturing = false;
     if (leaf.cpp_declares.length === leaf.cpp_uses.length) {
         const cpp_declares = leaf.cpp_declares.sort();
@@ -45,6 +48,6 @@ export function FunctionDeclaration(leaf, state) {
     else
     {
         state.functions.push(JSON.parse(JSON.stringify(leaf)));
-        leaf.type = "EmptyExpression";
+        leaf.type = "EmptyStatement";
     }
 }

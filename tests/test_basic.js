@@ -41,9 +41,30 @@ test("Array", async () => {
     assert.strictEqual(0, test_with_file("./sources/array.js"));
 });
 
-test("Function declaration", async (t) => {
-    await t.test("function", () => {
-        assert.strictEqual(0, test_with_file("./sources/function.js"));
+test("Function", async (t) => {
+    await t.test("function_statement", () => {
+        assert.strictEqual(0, test_with_file("./sources/function/function_statement.js"));
+    });
+    await t.test("function_expression", () => {
+        assert.strictEqual(0, test_with_file("./sources/function/function_expression.js"));
+    });
+    await t.test("function_expression_named", () => {
+        assert.strictEqual(0, test_with_file("./sources/function/function_expression_named.js"));
+    });
+    await t.test("function_expression_lambda", () => {
+        assert.strictEqual(0, test_with_file("./sources/function/function_expression_lambda.js"));
+    });
+    await t.test("function_statement_global_captures", () => {
+        assert.strictEqual(0, test_with_file("./sources/function/function_statement_global_captures.js"));
+    });
+    await t.test("function_expression_global_captures", () => {
+        assert.strictEqual(0, test_with_file("./sources/function/function_expression_global_captures.js"));
+    });
+    await t.test("function_statement_local_captures", () => {
+        assert.strictEqual(0, test_with_file("./sources/function/function_statement_local_captures.js"));
+    });
+    await t.test("function_expression_local_captures", () => {
+        assert.strictEqual(0, test_with_file("./sources/function/function_expression_local_captures.js"));
     });
 });
 
