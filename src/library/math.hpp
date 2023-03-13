@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cmath>
 
-struct Math {
+struct math_t {
   const double PI = 3.14159265358979323846;
   const double E = 2.71828182845904523536;
 
@@ -9,9 +9,23 @@ struct Math {
     return std::abs(x);
   }
 
+
   constexpr double ceil(double x) const noexcept {
     return std::ceil(x);
   }
+
+  constexpr double floor(double x) const noexcept {
+    return std::floor(x);
+  }
+
+  constexpr double trunc(double x) const noexcept {
+    return std::trunc(x);
+  }
+
+  constexpr double round(double x) const noexcept {
+    return std::round(x);
+  }
+
 
   constexpr double cos(double x) const noexcept {
     return std::cos(x);
@@ -19,10 +33,6 @@ struct Math {
 
   constexpr double exp(double x) const noexcept {
     return std::exp(x);
-  }
-
-  constexpr double floor(double x) const noexcept {
-    return std::floor(x);
   }
 
   constexpr double log(double x) const noexcept {
@@ -41,9 +51,6 @@ struct Math {
     return std::pow(x, y);
   }
 
-  constexpr double round(double x) const noexcept {
-    return std::round(x);
-  }
 
   constexpr double sin(double x) const noexcept {
     return std::sin(x);
@@ -58,4 +65,4 @@ struct Math {
   }
 };
 
-inline const Math math{};
+inline const math_t Math{};
