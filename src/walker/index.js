@@ -1,5 +1,6 @@
 export * from "./ArrowFunctionExpression.js";
 export * from "./AssignmentExpression.js";
+export * from "./BinaryExpression.js";
 export * from "./BreakStatement.js";
 export * from "./ContinueStatement.js";
 export * from "./FunctionDeclaration.js";

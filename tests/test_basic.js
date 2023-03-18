@@ -79,7 +79,8 @@ test("typeof", async () => {
     const [status, out] = test_file_stdout("./sources/typeof.js");
     assert.strictEqual(0, status);
     assert.strictEqual(
-        "number\nnumber\nstring\nstring\nnumber\nnumber (integer)\nnumber\nnumber (float)\nboolean\nboolean\narray\narray\nobject\nobject\nobject\nobject (NULL)\nundefined\nundefined\nundefined\n",
+        // "number\nnumber\nstring\nstring\nnumber\nnumber (integer)\nnumber\nnumber (float)\nboolean\nboolean\narray\narray\nobject\nobject\nobject\nobject (NULL)\nundefined\nundefined\nundefined\n",  // for debug build
+        "number\nnumber\nstring\nstring\nnumber\nnumber\nnumber\nnumber\nboolean\nboolean\narray\narray\nobject\nobject\nobject\nobject\nundefined\nundefined\nundefined\n",
         out
     );
 });
@@ -88,7 +89,8 @@ test("math", async () => {
     const [status, out] = test_file_stdout("./sources/math.js");
     assert.strictEqual(0, status);
     assert.strictEqual(
-        "1232.4number (float)\n1232.4number (float)\n1232number (float)\n5656\n",
+        // "1232.4number (float)\n1232.4number (float)\n1232number (float)\n5656\n", // for debug
+        "1232.4number\n1232.4number\n1232number\n5656\n",
         out
     );
 });

@@ -1,15 +1,15 @@
 const FunctionBinaryOperators = {
-    "===": "StrictEqual",
-    "!==": "StringNotEqual",
-    instanceof: "InstanceOf",
-    in: "KeyInObject",
-    ">>>": "UnsignedRightShift",
-    "??": "NullishCoalescing"
+    "===": "_strict_equal",
+    "!==": "not _strict_equal",
+    // instanceof: "InstanceOf",
+    // in: "KeyInObject",
+    ">>>": "_unsigned_right_shift",
+    "??": "_nullish_coalescing"
 };
 
 export function BinaryExpression (leaf, toString) {
     if (FunctionBinaryOperators[leaf.operator]) {
-        let str = `NectarCore::Operator::${FunctionBinaryOperators[leaf.operator]}(`;
+        let str = `${FunctionBinaryOperators[leaf.operator]}(`;
         str += toString({
             type: "SequenceExpression",
             expressions: [leaf.left, leaf.right]
