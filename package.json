@@ -17,7 +17,7 @@
     "app": "index.js"
   },
   "scripts": {
-    "pretest": "rm -rf /tmp/jsc-build; mkdir /tmp/jsc-build",
+    "pretest": "rm -rf /tmp/jsc-build; mkdir /tmp/jsc-build; npm run package && npm run local_install",
     "test": "node --test tests/test_basic.js",
     "lint": "npx eslint --ext .js .",
     "preinstall": "g++-12 --version || exit 1",
