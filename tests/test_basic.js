@@ -10,7 +10,7 @@ function test_file(inputFile) {
     const exe_name = "./prog.out";
     try {
         // Compile
-        execSync(`node ../index.js -d ${inputFile} -o ${exe_name}`, { cwd: test_dir });
+        execSync(`node ../build/index.js -d ${inputFile} -o ${exe_name}`, { cwd: test_dir });
     } catch {
         return 1;
     }
@@ -28,7 +28,7 @@ function test_file_stdout(inputFile) {
     let out = "";
     try {
         // Compile
-        execSync(`node ../index.js -d ${inputFile} -o ${exe_name}`, { cwd: test_dir });
+        execSync(`node ../build/index.js -d ${inputFile} -o ${exe_name}`, { cwd: test_dir });
     } catch {
         return [1, out];
     }
