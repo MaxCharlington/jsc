@@ -21,7 +21,7 @@
     "test": "node --test tests/test_basic.js",
     "lint": "npx eslint --ext .js .",
     "preinstall": "g++-12 --version || exit 1",
-    "package": "cmake -B build . -DCMAKE_INSTALL_PREFIX=build/install && cmake --build build/ --config Release --parallel 4 && cmake --install build/ --config Release && cpack --config build/CPackConfig.cmake -B build/",
+    "package": "tsc && cmake -B build . -DCMAKE_INSTALL_PREFIX=build/install && cmake --build build/ --config Release --parallel 4 && cmake --install build/ --config Release && cpack --config build/CPackConfig.cmake -B build/",
     "local_install": "sudo cp -r build/install/* /usr/local/"
   },
   "dependencies": {
