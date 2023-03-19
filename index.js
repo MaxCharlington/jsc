@@ -1,5 +1,6 @@
+#!/usr/bin/env node
 import { program as cli } from "commander";
-import { createReadStream, createWriteStream, rm, mkdir } from "fs";
+import { createReadStream, createWriteStream, mkdir } from "fs";
 import { compile_cpp, format_cpp, outputFullStream, readFullStream } from "./src/compiler.js";
 import path from "node:path";
 
@@ -25,11 +26,6 @@ cli.parse();
 const cli_args = cli.opts();
 cli_args.inputFile = inputFilePath;
 
-// await rm(TMP_PATH, { recursive: true, force: true }, (err) => {
-//   if (err) {
-//     exit(1);
-//   }
-// });
 await mkdir(TMP_PATH, () => {});
 
 const cppSourcePath = path.join(TMP_PATH, path.basename(cli_args.inputFile) + ".cpp");

@@ -1,4 +1,7 @@
-export function FunctionDeclaration(leaf, state) {
+// @ts-nocheck
+import { FunctionDeclaration } from "estree";
+
+export function FunctionDeclaration(leaf: FunctionDeclaration, state) {
     if (!leaf.cpp_declares) leaf.cpp_declares = [];
     if (!leaf.cpp_uses) leaf.cpp_uses = [];
 

@@ -1,4 +1,7 @@
-export function WithStatement (leaf) {
+// @ts-nocheck
+import { WithStatement } from "estree";
+
+export function WithStatement (leaf: WithStatement) {
     leaf.type = "BlockStatement";
     leaf.body = [
         {

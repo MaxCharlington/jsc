@@ -1,6 +1,7 @@
+import { ArrowFunctionExpression, FunctionExpression as FE } from "estree";
 import { FunctionExpression } from "./FunctionExpression.js";
 
-export function ArrowFunctionExpression (leaf) {
+export function ArrowFunctionExpression (leaf: any) {
     leaf.type = "FunctionExpression";
     if (leaf.expression) {
         leaf.body = {
@@ -13,5 +14,5 @@ export function ArrowFunctionExpression (leaf) {
             ]
         };
     }
-    FunctionExpression(leaf);
+    FunctionExpression(leaf as FE);
 }

@@ -1,4 +1,7 @@
-function ToPrimitive (leaf) {
+// @ts-nocheck
+import { Identifier, Literal } from "estree";
+
+function ToPrimitive (leaf: Literal | Identifier) {
     if (leaf.type === "Identifier") {
         switch (leaf.name) {
         case "Infinity": return [true, Infinity];
