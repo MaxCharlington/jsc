@@ -1,4 +1,6 @@
-export function FunctionExpression (leaf) {
+import { FunctionExpression } from "estree";
+
+export function FunctionExpression (leaf: FunctionExpression) {
     if (leaf.generator) {
         throw new Error("Generator functions not supported");
     }

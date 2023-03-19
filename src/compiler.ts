@@ -4,10 +4,11 @@ import { exit } from "process";
 import path from "node:path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import { ReadStream, WriteStream } from "node:fs";
 
 const run_dir = path.join(dirname(fileURLToPath(import.meta.url)), "..");
 
-export async function readFullStream(stream) {
+export async function readFullStream(stream: ReadStream) {
     const chunks = [];
     for await (const chunk of stream) {
         chunks.push(Buffer.from(chunk));
@@ -15,7 +16,7 @@ export async function readFullStream(stream) {
     return Buffer.concat(chunks);
 }
 
-export async function outputFullStream(stream, data) {
+export async function outputFullStream(stream: WriteStream, data: string) {
     for (let i = 0; i < data.length;) {
         const flushed = stream.write(data.slice(i, i += stream.writableHighWaterMark));
         if (!flushed) {
@@ -25,7 +26,7 @@ export async function outputFullStream(stream, data) {
     stream.end();
 }
 
-export function format_cpp(cppSourcePath) {
+export function format_cpp(cppSourcePath: string) {
     exec(`${run_dir}/node_modules/clang-format/bin/linux_x64/clang-format ${cppSourcePath} > ${path.join(path.dirname(cppSourcePath), path.basename(cppSourcePath, ".cpp") + ".formatted.cpp")}`, (err, _, stderr) => {
         if (err) {
             console.error(stderr);
@@ -33,7 +34,7 @@ export function format_cpp(cppSourcePath) {
     });
 }
 
-export function compile_cpp(cppSourcePath, outPath) {
+export function compile_cpp(cppSourcePath: string, outPath: string) {
     exec(`g++ ${cppSourcePath} -I/usr/local/include/jscompiler -std=c++2b -o ${outPath}`, (err, _, stderr) => {
         if (err) {
             console.error(stderr);
