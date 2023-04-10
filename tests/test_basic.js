@@ -79,8 +79,8 @@ test("typeof", async () => {
     const [status, out] = test_file_stdout("./sources/typeof.js");
     assert.strictEqual(0, status);
     assert.strictEqual(
-        // "number\nnumber\nstring\nstring\nnumber\nnumber (integer)\nnumber\nnumber (float)\nboolean\nboolean\narray\narray\nobject\nobject\nobject\nobject (NULL)\nundefined\nundefined\nundefined\n",  // for debug build
-        "number\nnumber\nstring\nstring\nnumber\nnumber\nnumber\nnumber\nboolean\nboolean\narray\narray\nobject\nobject\nobject\nobject\nundefined\nundefined\nundefined\n",
+        // "number\nnumber\nstring\nstring\nnumber\nnumber (integer)\nnumber\nnumber (float)\nboolean\nboolean\nobject (array)\narray\nobject\nobject\nobject\nobject (NULL)\nundefined\nundefined\nundefined\n",  // for debug build
+        "number\nnumber\nstring\nstring\nnumber\nnumber\nnumber\nnumber\nboolean\nboolean\nobject\nobject\nobject\nobject\nobject\nobject\nundefined\nundefined\nundefined\n",
         out
     );
 });
