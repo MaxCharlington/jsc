@@ -2,11 +2,7 @@ import { exec } from "node:child_process";
 import { once } from "events";
 import { exit } from "process";
 import path from "node:path";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
 import { ReadStream, WriteStream } from "node:fs";
-
-const run_dir = path.join(dirname(fileURLToPath(import.meta.url)), "..");
 
 export async function readFullStream(stream: ReadStream) {
     const chunks = [];
@@ -27,7 +23,7 @@ export async function outputFullStream(stream: WriteStream, data: string) {
 }
 
 export function format_cpp(cppSourcePath: string) {
-    exec(`${run_dir}/node_modules/clang-format/bin/linux_x64/clang-format ${cppSourcePath} > ${path.join(path.dirname(cppSourcePath), path.basename(cppSourcePath, ".cpp") + ".formatted.cpp")}`, (err, _, stderr) => {
+    exec(`clang-format ${cppSourcePath} > ${path.join(path.dirname(cppSourcePath), path.basename(cppSourcePath, ".cpp") + ".formatted.cpp")}`, (err, _, stderr) => {
         if (err) {
             console.error(stderr);
         }

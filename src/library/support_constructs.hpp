@@ -36,11 +36,13 @@ constexpr auto _typeof(const T& variable) -> const char*
         return "number";
     else if constexpr (DynamicTyping::CString<Type>)
         return "string";
-    else if constexpr (std::is_same_v<Type, DynamicTyping::object_t> or is_string_map_v<Type> or std::is_same_v<Type, DynamicTyping::null_t>)
+    else if constexpr (is_array_or_vector_v<Type> or  // for arrays
+        std::is_same_v<Type, DynamicTyping::object_t> or
+        is_string_map_v<Type> or
+        std::is_same_v<Type, DynamicTyping::null_t>
+    )
         // Check for object before array because object is array inside
         return "object";
-    else if constexpr (is_array_or_vector_v<Type>)
-        return "array";
     else if constexpr (std::is_same_v<Type, DynamicTyping::undefined_t>)
         return "undefined";
 }
