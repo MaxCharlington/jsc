@@ -2,16 +2,21 @@ cmake_minimum_required(VERSION 3.22)
 
 project(jsc VERSION 0.1.0.0)
 
-# add_custom_target(jsc ALL)
+set(JSC_VERSIONED_BUNDLE jsc${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.mjs)
 
-# add_custom_command(TARGET jsc
-#     COMMAND pkg ${CMAKE_BINARY_DIR}/index.js --compress GZip -t node16-linux -o ${CMAKE_BINARY_DIR}/jsc
-#     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-#     DEPENDS index.js
-#     VERBATIM
-# )
+add_custom_command(
+    COMMAND bun build ${CMAKE_SOURCE_DIR}/index.ts --compile --minify --outfile=${CMAKE_BINARY_DIR}/${JSC_VERSIONED_BUNDLE}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    DEPENDS ${CMAKE_SOURCE_DIR}/index.ts
+    OUTPUT ${CMAKE_BINARY_DIR}/${JSC_VERSIONED_BUNDLE}
+    VERBATIM
+)
 
-# install(PROGRAMS src/jsc DESTINATION bin)
+add_custom_target(${PROJECT_NAME} ALL DEPENDS ${CMAKE_BINARY_DIR}/${JSC_VERSIONED_BUNDLE})
+
+install(PROGRAMS
+        ${CMAKE_BINARY_DIR}/${JSC_VERSIONED_BUNDLE}
+        DESTINATION bin)
 
 install(FILES
         deps/helpers/ct2rt.hpp
@@ -30,10 +35,6 @@ install(FILES
         deps/cest/include/cest/runtime_ostream.hpp
         DESTINATION include/cest)
 
-# install(PROGRAMS
-#         ${CMAKE_BINARY_DIR}/jsc
-#         DESTINATION bin)
-
 install(DIRECTORY
         deps/dt/include/
         DESTINATION include/jscompiler)
@@ -50,7 +51,7 @@ set(CPACK_PACKAGE_NAME ${PROJECT_NAME}${PROJECT_VERSION_MAJOR} CACHE STRING "Pac
 set(CPACK_VERBATIM_VARIABLES YES)
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "MaxCharlington")
 set(CPACK_RESOURCE_FILE_README "${CMAKE_SOURCE_DIR}/README.md")
-# set(CPACK_DEBIAN_PACKAGE_DEPENDS "g++ (>= 12.1), cmake (>= 3.22)")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "g++ (>= 13.1)")
 set(CPACK_GENERATOR TGZ DEB)
 
 include(CPack)

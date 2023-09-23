@@ -23,6 +23,7 @@ template<typename T>
 constexpr bool is_string_map_v = is_string_map<T>::value;
 
 
+// Rewrite with olready implemented DynamicTyping code of type helpers
 template<typename T>
 constexpr auto _typeof(const T& variable) -> const char*
 {

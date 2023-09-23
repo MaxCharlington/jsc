@@ -14,14 +14,18 @@
   "homepage": "https://github.com/MaxCharlington/jsc#readme",
   "type": "module",
   "bin": {
-    "app": "index.js"
+    "app": "index.ts"
   },
   "scripts": {
-    "pretest": "rm -rf /tmp/jsc-build; mkdir /tmp/jsc-build; npm run package && npm run local_install",
+    "preinstall": "g++-13 --version && bun --version",
+    "pretest": "rm -rf /tmp/jsc-build && mkdir /tmp/jsc-build && bun run build && bun run package && bun run local_install",
     "test": "node --test tests/test_basic.js",
-    "lint": "npx eslint --ext .js .",
-    "preinstall": "g++-12 --version || exit 1",
-    "package": "tsc && cmake -B build . -DCMAKE_INSTALL_PREFIX=build/install && cmake --build build/ --config Release --parallel 4 && cmake --install build/ --config Release && cpack --config build/CPackConfig.cmake -B build/",
+    "lint": "bunx eslint --ext .js .",
+    "validate": "tsc; bun run lint",
+    "prebuild": "cmake -B build . -DCMAKE_INSTALL_PREFIX=build/install -DCMAKE_BUILD_TYPE=Release",
+    "build": "cmake --build build/ --config Release --parallel $(nproc)",
+    "prepackage": "rm -rf build/install",
+    "package": "cmake --install build/ --config Release && cpack --config build/CPackConfig.cmake -B build/",
     "local_install": "sudo cp -r build/install/* /usr/local/"
   },
   "dependencies": {
@@ -29,14 +33,10 @@
     "acorn-walk": "^8.2.0",
     "clang-format": "^1.8.0",
     "commander": "^9.4.1",
-    "pkg": "^5.8.0"
+    "esbuild": "^0.19.2"
   },
   "engines": {
-    "node": ">=16.19.0",
-    "npm": ">=8.19.0"
-  },
-  "pkg": {
-    "scripts": "src/**/*.js"
+    "bun": ">=1.0.2"
   },
   "os": [
     "linux"
@@ -47,7 +47,6 @@
     "@typescript-eslint/eslint-plugin": "^5.53.0",
     "@typescript-eslint/parser": "^5.53.0",
     "eslint": "^8.35.0",
-    "ts-node": "^10.9.1",
     "typescript": "^5.0.2"
   }
 }

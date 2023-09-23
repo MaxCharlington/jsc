@@ -1,5 +1,5 @@
 import gulp from "gulp";
-import esbuild from "gulp-esbuild";
+// import esbuild from "gulp-esbuild";
 import babel from "gulp-babel";
 
 function build() {
