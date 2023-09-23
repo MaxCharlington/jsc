@@ -3,6 +3,7 @@ import { once } from "events";
 import { exit } from "process";
 import path from "node:path";
 import { ReadStream, WriteStream } from "node:fs";
+import { Buffer } from "node:buffer";
 
 export async function readFullStream(stream: ReadStream) {
     const chunks = [];
@@ -12,7 +13,7 @@ export async function readFullStream(stream: ReadStream) {
     return Buffer.concat(chunks);
 }
 
-export async function outputFullStream(stream: WriteStream, data: string) {
+export async function outputFullStream(stream: WriteStream | any, data: string) {
     for (let i = 0; i < data.length;) {
         const flushed = stream.write(data.slice(i, i += stream.writableHighWaterMark));
         if (!flushed) {

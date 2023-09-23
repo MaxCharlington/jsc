@@ -3,6 +3,7 @@ import { program as cli } from "commander";
 import { createReadStream, createWriteStream, mkdir } from "fs";
 import { compile_cpp, format_cpp, outputFullStream, readFullStream } from "./src/compiler.js";
 import path from "node:path";
+import process from "node:process";
 
 import Transpile from "./src/transpiler.js";
 
