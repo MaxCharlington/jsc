@@ -1,9 +1,3 @@
-[submodule "deps/dt"]
-	path = deps/dt
-	url = https://github.com/MaxCharlington/Dynamic-typing
 [submodule "deps/helpers"]
 	path = deps/helpers
 	url = https://github.com/MaxCharlington/CppHelpers
-[submodule "deps/cest"]
-	path = deps/cest
-	url = https://github.com/pkeir/cest
