@@ -5,39 +5,39 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 
 const test_dir = dirname(fileURLToPath(import.meta.url));
+const compiler_exe = "jsc";
+const compiled_exe = "./prog.out";
 
 function test_file(inputFile) {
-    const exe_name = "./prog.out";
     try {
         // Compile
-        execSync(`node ../build/index.js -d ${inputFile} -o ${exe_name}`, { cwd: test_dir });
+        execSync(`${compiler_exe} -d ${inputFile} -o ${compiled_exe}`, { cwd: test_dir });
     } catch {
         return 1;
     }
     try {
         // Run executable
-        execSync(exe_name, { cwd: test_dir });
+        execSync(compiled_exe, { cwd: test_dir });
     } catch {
-        return 1;
+        return 2;
     }
     return 0;
 }
 
 function test_file_stdout(inputFile) {
-    const exe_name = "./prog.out";
     let out = "";
     try {
         // Compile
-        execSync(`node ../build/index.js -d ${inputFile} -o ${exe_name}`, { cwd: test_dir });
+        execSync(`${compiler_exe} -d ${inputFile} -o ${compiled_exe}`, { cwd: test_dir });
     } catch {
         return [1, out];
     }
     try {
         // Run executable
-        out = execSync(exe_name, { cwd: test_dir }).toString();
-        console.warn(`"${out.replace(/\n/g, "\\n")}"`);
+        out = execSync(compiled_exe, { cwd: test_dir }).toString();
+        // console.warn(`"${out.replace(/\n/g, "\\n")}"`);
     } catch {
-        return [1, out];
+        return [2, out];
     }
     return [0, out];
 }

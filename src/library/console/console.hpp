@@ -1,13 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include <cest/string.hpp>
-
-std::ostream& operator<<(std::ostream& out, const cest::string& str)
-{
-    out << str.c_str();
-    return out;
-}
 
 struct Console
 {

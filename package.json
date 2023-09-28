@@ -18,14 +18,15 @@
   },
   "scripts": {
     "preinstall": "g++-13 --version && bun --version",
-    "pretest": "rm -rf /tmp/jsc-build && mkdir /tmp/jsc-build && bun run build && bun run package && bun run local_install",
-    "test": "node --test tests/test_basic.js",
-    "lint": "bunx eslint --ext .js .",
+    "pretest": "rm -rf /tmp/jsc-build && mkdir /tmp/jsc-build && bun run build && cmake -B build . -DBUILD_TESTS=1 -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=build/install && bun run package && bun run local_install",
+    "test": "build/tests/units/test_js && build/tests/units/test_runtime && build/tests/units/test_type_interop && bun run lint && node --test tests/integration/test_basic.js",
+    "lint": "bunx eslint --ext .js,.ts .",
     "validate": "tsc; bun run lint",
     "prebuild": "cmake -B build . -DCMAKE_INSTALL_PREFIX=build/install -DCMAKE_BUILD_TYPE=Release",
     "build": "cmake --build build/ --config Release --parallel $(nproc)",
-    "prepackage": "rm -rf build/install",
+    "prepackage": "rm -rf build/install && rm -rf build/_CPack_Packages",
     "package": "cmake --install build/ --config Release && cpack --config build/CPackConfig.cmake -B build/",
+    "prelocal_install": "sudo rm -rf /usr/local/include/jscompiler/",
     "local_install": "sudo cp -r build/install/* /usr/local/"
   },
   "dependencies": {

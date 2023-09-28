@@ -1,4 +1,4 @@
-#include <jscompiler/dynamic_typing.hpp>
+#include <typing/dynamic_typing.hpp>
 
 template<typename T>
 struct is_array_or_vector : std::false_type {};
@@ -17,7 +17,7 @@ template<typename T>
 struct is_string_map : std::false_type {};
 
 template<typename V>
-struct is_string_map<std::unordered_map<cest::string, V>> : std::true_type {};
+struct is_string_map<std::unordered_map<std::string, V>> : std::true_type {};
 
 template<typename T>
 constexpr bool is_string_map_v = is_string_map<T>::value;
@@ -35,7 +35,7 @@ constexpr auto _typeof(const T& variable) -> const char*
         return "boolean";
     else if constexpr (std::is_integral_v<Type> or std::is_floating_point_v<Type>)
         return "number";
-    else if constexpr (DynamicTyping::CString<Type>)
+    else if constexpr (DynamicTyping::StringLike<Type>)
         return "string";
     else if constexpr (is_array_or_vector_v<Type> or  // for arrays
         std::is_same_v<Type, DynamicTyping::object_t> or
@@ -55,9 +55,9 @@ constexpr bool _strict_equal(const T1& val1, const T2& val2)
         return val1 == val2;
     else if constexpr (std::same_as<T1, DynamicTyping::var> or std::same_as<T2, DynamicTyping::var>)
         return DynamicTyping::strict_equal_impl(val1, val2);
-    else if (DynamicTyping::CString<T1> and DynamicTyping::CString<T2>)
+    else if (DynamicTyping::StringLike<T1> and DynamicTyping::StringLike<T2>)
         return val1 == val2;
-    else if (DynamicTyping::CArithmetic<T1> and DynamicTyping::CArithmetic<T2>
+    else if (DynamicTyping::Arithmetic<T1> and DynamicTyping::Arithmetic<T2>
         and not std::same_as<T1, DynamicTyping::Types::bool_t> and not std::same_as<T2, DynamicTyping::Types::bool_t>
     )
         return val1 == val2;

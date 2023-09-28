@@ -1,42 +1,38 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(jsc VERSION 0.1.0.0)
+project(jsc
+        VERSION 0.1.0.0
+        DESCRIPTION "JavaScript compiler"
+        HOMEPAGE_URL https://github.com/MaxCharlington/jsc)
 
-set(JSC_VERSIONED_BUNDLE jsc${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.mjs)
+set(JSC_BUNDLE ${PROJECT_NAME})
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# Building
 add_custom_command(
-    COMMAND bun build ${CMAKE_SOURCE_DIR}/index.ts --compile --minify --outfile=${CMAKE_BINARY_DIR}/${JSC_VERSIONED_BUNDLE}
+    COMMAND bun build ${CMAKE_SOURCE_DIR}/index.ts --compile --minify --outfile=${CMAKE_BINARY_DIR}/${JSC_BUNDLE}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     DEPENDS ${CMAKE_SOURCE_DIR}/index.ts
-    OUTPUT ${CMAKE_BINARY_DIR}/${JSC_VERSIONED_BUNDLE}
+    OUTPUT ${CMAKE_BINARY_DIR}/${JSC_BUNDLE}
     VERBATIM
 )
 
-add_custom_target(${PROJECT_NAME} ALL DEPENDS ${CMAKE_BINARY_DIR}/${JSC_VERSIONED_BUNDLE})
+add_custom_target(${PROJECT_NAME} ALL DEPENDS ${CMAKE_BINARY_DIR}/${JSC_BUNDLE})
 
+# Packaging
 install(PROGRAMS
-        ${CMAKE_BINARY_DIR}/${JSC_VERSIONED_BUNDLE}
+        ${CMAKE_BINARY_DIR}/${JSC_BUNDLE}
         DESTINATION bin)
 
-install(FILES
-        deps/helpers/ct2rt.hpp
-        deps/helpers/overloaded.hpp
-        deps/helpers/remove_all_const.hpp
-        deps/helpers/template_strings.hpp
-        DESTINATION include/jscompiler)
+set(CPP_HELPERS_HEADERS_PATH "${CMAKE_SOURCE_DIR}/deps/helpers/")
+set(CPP_HELPERS_HEADERS
+    ${CPP_HELPERS_HEADERS_PATH}/ct2rt.hpp
+    ${CPP_HELPERS_HEADERS_PATH}/overloaded.hpp
+    ${CPP_HELPERS_HEADERS_PATH}/remove_all_const.hpp
+    ${CPP_HELPERS_HEADERS_PATH}/template_strings.hpp)
 
 install(FILES
-        deps/cest/include/cest/string.hpp
-        deps/cest/include/cest/ios.hpp
-        deps/cest/include/cest/ios_base.hpp
-        deps/cest/include/cest/basic_ios.hpp
-        deps/cest/include/cest/ostream.hpp
-        deps/cest/include/cest/streambuf.hpp
-        deps/cest/include/cest/runtime_ostream.hpp
-        DESTINATION include/cest)
-
-install(DIRECTORY
-        deps/dt/include/
+        FILES ${CPP_HELPERS_HEADERS}
         DESTINATION include/jscompiler)
 
 install(DIRECTORY
@@ -55,3 +51,6 @@ set(CPACK_DEBIAN_PACKAGE_DEPENDS "g++ (>= 13.1)")
 set(CPACK_GENERATOR TGZ DEB)
 
 include(CPack)
+
+# Testing
+add_subdirectory(${CMAKE_SOURCE_DIR}/tests/units)
