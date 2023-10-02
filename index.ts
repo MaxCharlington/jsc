@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import { program as cli } from "commander";
 import { createReadStream, createWriteStream, mkdir } from "fs";
 import { compile_cpp, format_cpp, outputFullStream, readFullStream } from "./src/compiler.js";
