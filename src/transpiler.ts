@@ -1,4 +1,5 @@
 import * as Acorn from "acorn";
+import process from "node:process";
 import WalkAST from "./walker.js";
 import OptimizeAST from "./optimizer.js";
 import GenerateCode from "./generator.js";
