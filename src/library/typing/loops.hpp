@@ -159,8 +159,8 @@ public:
     };
 
     constexpr ForInView(var& d) : m_data{d.data} {
-        if (not std::holds_alternative<integer_t>(m_data.get()) &&
-            not std::holds_alternative<string_t>(m_data.get()))
+        if (not std::holds_alternative<array_t>(m_data.get()) &&
+            not std::holds_alternative<object_t>(m_data.get()))
         {
             // if type is unsupported we do not throw and make no iterations
             static data_t empty = array_t{};
