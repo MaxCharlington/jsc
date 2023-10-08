@@ -1,6 +1,7 @@
 if (BUILD_TESTS EQUAL 1)
 
-add_compile_options(-ggdb -Wall -Wextra -Wconversion -Wno-unused-variable -DDEBUG)
+add_compile_options(-Og -ggdb -Wall -Wextra -Wconversion -Wno-unused-variable -DDEBUG -fsanitize=undefined)
+add_link_options(-fsanitize=undefined)
 include_directories(${CMAKE_SOURCE_DIR}/src/library/typing)
 include_directories(${CMAKE_SOURCE_DIR}/deps/helpers)
 

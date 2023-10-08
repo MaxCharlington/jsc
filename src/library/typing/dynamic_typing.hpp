@@ -109,6 +109,10 @@ public:
     template<typename T1, typename T2>
     friend constexpr bool strict_equal_impl(const T1&, const T2&);
 
+    // Loops implementation
+    friend class ForOfView;
+    friend class ForInView;
+
 private:
     data_t data;
 };
