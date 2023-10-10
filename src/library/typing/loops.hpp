@@ -197,19 +197,31 @@ private:
     std::reference_wrapper<data_t> m_data;
 };
 
-constexpr void for_of(auto&& iterable, auto&& callable) {
-    using Callable = decltype(callable);
-    for (auto el_var_ref : ForOfView(iterable)) {
-        std::visit(overloaded{
-            [&](char ch){ if constexpr (std::invocable<Callable, char>) callable(ch); },
-            [&](var& v){ if constexpr (std::invocable<Callable, var&>) callable(v); }
-        }, el_var_ref);
+template<typename Iterable, typename Callable>
+constexpr void for_of(Iterable&& iterable, Callable&& callable) {
+    using Type = std::remove_cvref_t<Iterable>;
+    if constexpr (std::same_as<Type, var>) {
+        for (auto el_var_ref : ForOfView(iterable)) {
+            std::visit(overloaded{
+                [&](char ch){ if constexpr (std::invocable<Callable, char>) callable(ch); },
+                [&](var& v){ if constexpr (std::invocable<Callable, var&>) callable(v); }
+            }, el_var_ref);
+        }
+    }
+    else if constexpr (std::same_as<Type, string_t>) {
+        if constexpr (std::invocable<Callable, char>) {
+            for (char ch : iterable) {
+                callable(ch);
+            }
+        }
+    }
+    else {
+        throw std::runtime_error{"Type is not iterable"};
     }
 }
 
-constexpr void for_in(auto&& iterable, auto&& callable) {
-    using Iterable = std::remove_cvref_t<decltype(iterable)>;
-    using Callable = decltype(callable);
+template<typename Iterable, typename Callable>
+constexpr void for_in(Iterable&& iterable, Callable&& callable) {
     if constexpr (std::same_as<Iterable, var>) {
         for (auto el_var_ref : ForInView(iterable)) {
             std::visit(overloaded{

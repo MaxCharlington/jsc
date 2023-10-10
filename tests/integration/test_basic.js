@@ -61,9 +61,9 @@ test("Variable declaration", async (t) => {
 //     await t.test("for", () => {
 //         assert.strictEqual(0, test_file("./sources/loop/for.js"));
 //     });
-//     await t.test("for_of", () => {
-//         assert.strictEqual(0, test_file("./sources/loop/for_of.js"));
-//     });
+    await t.test("for_of", () => {
+        assert.strictEqual(0, test_file("./sources/loop/for_of.js"));
+    });
 //     await t.test("for_in", () => {
 //         assert.strictEqual(0, test_file("./sources/loop/for_in.js"));
 //     });

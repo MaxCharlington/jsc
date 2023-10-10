@@ -11,11 +11,10 @@ export function ForStatement (leaf, toString) {
 }
 
 export function ForInStatement (leaf, toString) {
-    return `for (${toString(leaf.left)} : ${toString(leaf.right)}) ` + toString(leaf.body);
+    return `DynamicTyping::for_in(${toString(leaf.right)}, [&](auto ${loop_var})${toString(leaf.body)});`;
 }
 
 export function ForOfStatement (leaf, toString) {
-    let loop_var = toString(leaf.left);
-    loop_var = loop_var.substring(0, loop_var.length - 1);
-    return `for (${loop_var} : ${toString(leaf.right)}) ` + toString(leaf.body);
+    const loop_var = leaf.left.declarations[0].id.name;
+    return `DynamicTyping::for_of(${toString(leaf.right)}, [&](auto ${loop_var})${toString(leaf.body)});`;
 }
