@@ -203,8 +203,18 @@ constexpr void for_of(Iterable&& iterable, Callable&& callable) {
     if constexpr (std::same_as<Type, var>) {
         for (auto el_var_ref : ForOfView(iterable)) {
             std::visit(overloaded{
-                [&](char ch){ if constexpr (std::invocable<Callable, char>) callable(ch); },
-                [&](var& v){ if constexpr (std::invocable<Callable, var&>) callable(v); }
+                [&](char ch) {
+                    if constexpr (std::invocable<Callable, char>)
+                        callable(ch);
+                    else
+                        throw std::runtime_error{"Non callable loop body function"};
+                },
+                [&](var& v) {
+                    if constexpr (std::invocable<Callable, var&>)
+                        callable(v);
+                    else
+                        throw std::runtime_error{"Non callable loop body function"};
+                }
             }, el_var_ref);
         }
     }
@@ -222,11 +232,22 @@ constexpr void for_of(Iterable&& iterable, Callable&& callable) {
 
 template<typename Iterable, typename Callable>
 constexpr void for_in(Iterable&& iterable, Callable&& callable) {
-    if constexpr (std::same_as<Iterable, var>) {
-        for (auto el_var_ref : ForInView(iterable)) {
-            std::visit(overloaded{
-                [&](const string_t& key) { if constexpr (std::invocable<Callable, const string_t&>) callable(key); },
-                [&](array_t::size_type index) { if constexpr (std::invocable<Callable, array_t::size_type>) callable(index); }
+    using Type = std::remove_cvref_t<Iterable>;
+    if constexpr (std::same_as<Type, var>) {
+        for (auto el_var_ref : ForInView(iterable)) {  // TODO: remove error handling from Views
+            std::visit(overloaded{                     // as all type errors should be checked before constructing them
+                [&](const string_t& key) {
+                    if constexpr (std::invocable<Callable, const string_t&>)
+                        callable(key);
+                    else
+                        throw std::runtime_error{"Non callable loop body function"};
+                },
+                [&](array_t::size_type index) {
+                    if constexpr (std::invocable<Callable, array_t::size_type>)
+                        callable(index);
+                    else
+                        throw std::runtime_error{"Non callable loop body function"};
+                }
             }, el_var_ref);
         }
     }

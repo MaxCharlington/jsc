@@ -10,13 +10,13 @@ export default function Transpile (code: string): [string, string, string] {
     try {
         WalkAST(ast);
     } catch (cause) {
-        console.error(new Error("Failed to transpile" + cause));
+        console.error(new Error("Failed to transpile: " + cause));
         process.exit(1);
     }
     try {
         OptimizeAST(ast);
     } catch (cause) {
-        console.error(new Error("Failed to optimize" + cause));
+        console.error(new Error("Failed to optimize: " + cause));
         process.exit(1);
     }
     const modified_ast_str = JSON.stringify(ast, null, 4);
@@ -25,7 +25,7 @@ export default function Transpile (code: string): [string, string, string] {
         // @ts-ignore
         cpp_source = GenerateCode(ast);
     } catch (cause) {
-        console.error(new Error("Code generation failed" + cause));
+        console.error(new Error("Code generation failed: " + cause));
         process.exit(1);
     }
     return [base_ast_str, modified_ast_str, cpp_source];

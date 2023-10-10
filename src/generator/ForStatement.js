@@ -11,6 +11,7 @@ export function ForStatement (leaf, toString) {
 }
 
 export function ForInStatement (leaf, toString) {
+    const loop_var = leaf.left.declarations[0].id.name;
     return `DynamicTyping::for_in(${toString(leaf.right)}, [&](auto ${loop_var})${toString(leaf.body)});`;
 }
 
