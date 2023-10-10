@@ -1,4 +1,4 @@
-import { exec } from "node:child_process";
+import { exec, execSync } from "node:child_process";
 import { once } from "events";
 import { exit } from "process";
 import path from "node:path";
@@ -32,10 +32,11 @@ export function format_cpp(cppSourcePath: string) {
 }
 
 export function compile_cpp(cppSourcePath: string, outPath: string) {
-    exec(`g++-13 ${cppSourcePath} -I/usr/local/include/jscompiler -std=c++23 -o ${outPath}`, (err, _, stderr) => {
-        if (err) {
-            console.error(stderr);
-            exit(1);
-        }
-    });
+    try {
+        // Compile
+        execSync(`g++-13 ${cppSourcePath} -I/usr/local/include/jscompiler -std=c++23 -o ${outPath}`);
+    } catch (e: any) {
+        console.error(e.stderr.toString());
+        exit(1);
+    }
 }
