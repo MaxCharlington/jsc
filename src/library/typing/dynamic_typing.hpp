@@ -195,7 +195,7 @@ constexpr bool strict_equal_impl(const T1& v1, const T2& v2)
         {
             return IS<undefined_t>(v2.data);
         }
-        if constexpr (std::same_as<Type1, null_t>)
+        else if constexpr (std::same_as<Type1, null_t>)
         {
             return IS<null_t>(v2.data);
         }
@@ -614,7 +614,7 @@ constexpr bool var::operator==(const SupportedType auto& other) const
 {
     using Type = std::remove_cvref_t<decltype(other)>;
 
-    if constexpr (std::same_as<Type, undefined_t> or std::same_as<Type, undefined_t>)
+    if constexpr (std::same_as<Type, undefined_t> or std::same_as<Type, null_t>)
     {
         return IS<undefined_t>(this->data) or IS<null_t>(this->data);
     }
@@ -660,7 +660,8 @@ constexpr bool var::operator==(const SupportedType auto& other) const
                     auto res = sh::stold(other);
                     return res.has_value() and (res.value() == std::get<float_t>(this->data));
                 }()
-            )) ;
+            )) or
+            (IS<bool_t>(this->data) and (!string_t{other}.empty() == std::get<bool_t>(this->data)));
     }
 
     return false;
