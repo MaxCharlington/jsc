@@ -77,8 +77,22 @@ public:
     constexpr auto operator/=(const SupportedType<integer_t, float_t> auto&) -> var&;
     constexpr auto operator%=(const SupportedType<integer_t, float_t> auto&) -> var&;
 
+    // Comparison operators
+    // Spaceship is not able to implement those comparisons automatically
+
     constexpr bool operator==(const SupportedType auto&) const;
-    constexpr bool operator==(const var&) const;
+    constexpr bool operator<(const SupportedType auto&) const;
+    // One liner comparisons
+    constexpr bool operator==(const std::same_as<var> auto& other) const { return std::visit([this](auto&& data) { return *this == data; }, other.data); }
+    constexpr bool operator<(const std::same_as<var> auto& other) { return std::visit([this](auto&& data) { return *this < data; }, other.data); }
+    constexpr bool operator!=(const SupportedType auto& val) const { return !(*this == val); }
+    constexpr bool operator!=(const std::same_as<var> auto& other) const { return !(*this == other); }
+    constexpr bool operator<=(const SupportedType auto& val) const { return (*this < val) or (*this == val); }
+    constexpr bool operator<=(const std::same_as<var> auto& other) const { return (*this < other) or (*this == other); }
+    constexpr bool operator>(const SupportedType auto& val) const { return !(*this <= val); }
+    constexpr bool operator>(const std::same_as<var> auto& other) const { return !(*this <= other); }
+    constexpr bool operator>=(const SupportedType auto& val) const { return !(*this < val); }
+    constexpr bool operator>=(const std::same_as<var> auto& other) const { return !(*this < other); }
 
     constexpr operator data_t() const;
 
@@ -667,18 +681,65 @@ constexpr bool var::operator==(const SupportedType auto& other) const
     return false;
 }
 
-constexpr bool var::operator==(const var& other) const
+constexpr bool var::operator<(const SupportedType auto& other) const
 {
-    if (IS<undefined_t>(other.data))    return *this == std::get<function_t>(other.data);
-    else if (IS<null_t>(other.data))    return *this == std::get<null_t>(other.data);
-    else if (IS<bool_t>(other.data))    return *this == std::get<bool_t>(other.data);
-    else if (IS<integer_t>(other.data)) return *this == std::get<integer_t>(other.data);
-    else if (IS<float_t>(other.data))   return *this == std::get<float_t>(other.data);
-    else if (IS<string_t>(other.data))  return *this == std::get<string_t>(other.data);
-    else if (IS<array_t>(other.data))   return *this == std::get<array_t>(other.data);
-    else if (IS<object_t>(other.data))  return *this == std::get<object_t>(other.data);
-    std::unreachable();
+    using Type = std::remove_cvref_t<decltype(other)>;
+
+    if constexpr (std::same_as<Type, undefined_t> or std::same_as<Type, function_t>)
+    {
+        return false;
+    }
+    else if (std::same_as<Type, null_t>)
+    {
+        return *this < 0;
+    }
+    else if constexpr (std::integral<Type>)
+    {
+        return (IS<integer_t>(this->data) and (std::get<integer_t>(this->data) < other)) or
+            (IS<float_t>(this->data) and (std::get<float_t>(this->data) < other)) or
+            (IS<bool_t>(this->data) and (std::get<bool_t>(this->data) < other)) or
+            (IS<string_t>(this->data) and (
+                [&]{
+                    auto res = sh::stoll(std::get<string_t>(this->data).c_str());
+                    return res.has_value() and (res.value() < other);
+                }()
+            ));
+    }
+    else if constexpr (std::floating_point<Type>)
+    {
+        return (IS<integer_t>(this->data) and (std::get<integer_t>(this->data) < other)) or
+            (IS<float_t>(this->data) and (std::get<float_t>(this->data) < other)) or
+            (IS<bool_t>(this->data) and (std::get<bool_t>(this->data) < other)) or
+            (IS<string_t>(this->data) and (
+                [&]{
+                    auto res = sh::stold(std::get<string_t>(this->data));
+                    return res.has_value() and (res.value() < other);
+                }()
+            ));
+    }
+    else if constexpr (StringLike<Type>)
+    {
+        return (IS<string_t>(this->data) and (std::get<string_t>(this->data) < other)) or
+            (IS<integer_t>(this->data) and (
+                [&]{
+                    auto res = sh::stoll(other);
+                    return res.has_value() and (std::get<integer_t>(this->data) < res.value());
+                }()
+            )) or
+            (IS<float_t>(this->data) and (
+                [&]{
+                    auto res = sh::stold(other);
+                    return res.has_value() and (std::get<float_t>(this->data) < res.value());
+                }()
+            )) or
+            (IS<bool_t>(this->data) and (std::get<bool_t>(this->data) < !string_t{other}.empty()));
+    }
+    else
+    {
+        return false;
+    }
 }
+
 
 constexpr auto var::operator()(object_t& args) -> var
 {
