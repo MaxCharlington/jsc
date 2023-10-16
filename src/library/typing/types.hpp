@@ -108,8 +108,10 @@ concept SupportedInternalType = std::same_as<std::remove_cvref_t<T>, undefined_t
 /// @brief Concept that checks if a given is supported
 /// @details Supported means one of a listed types or convertible to in
 ///          some cases
+/// @note var type is excluded for overloading resolution
 template <typename T, typename ...Ts>
 concept SupportedType = SupportedInternalType<T> and
+                        not std::same_as<var, std::remove_cvref_t<T>> and
                         (sizeof...(Ts) == 0 or
                          (... or (std::same_as<std::remove_cvref_t<T>, Ts>)) or
                          (... or (std::is_convertible_v<std::remove_cvref_t<T>, Ts>)));
