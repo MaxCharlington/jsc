@@ -82,4 +82,10 @@ int main()
         });
         assert(no_thrown);
     }
+
+    std::cout << "\nbasic loops\n";
+
+    for (var i = 0; i < 10; i = i + 1) {
+        std::cout << i << std::endl;
+    }
 }
