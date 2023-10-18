@@ -1,6 +1,7 @@
 let i = 10;
 do
 {
-    i--;
+    console.log(i)
+    i = i - 1;
 }
 while (i > 0)
