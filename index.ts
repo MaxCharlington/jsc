@@ -3,8 +3,8 @@ import { createReadStream, createWriteStream, mkdir } from "fs";
 import { compile_cpp, format_cpp, outputFullStream, readFullStream } from "./src/compiler.js";
 import path from "node:path";
 import process from "node:process";
-
-import Transpile from "./src/transpiler.js";
+import { transpile } from "./src/transpiler.js";
+import { pretranspile } from "./src/pretranspile.js";
 
 const TMP_PATH = "/tmp/jsc-build";
 
@@ -31,11 +31,15 @@ await mkdir(TMP_PATH, () => {});
 const cppSourcePath = path.join(TMP_PATH, path.basename(cli_args.inputFile) + ".cpp");
 const outputCodeStream = !cli_args.output ? process.stdout : createWriteStream(cppSourcePath);
 
+//
+const jsPretranspiledPath = path.join(TMP_PATH, path.basename(cli_args.inputFile) + ".pretranspiled.js");
+await pretranspile(cli_args.inputFile, jsPretranspiledPath);
+
 // Read input
-const inputStream = createReadStream(cli_args.inputFile);
+const inputStream = createReadStream(jsPretranspiledPath);
 const inputBuffer = await readFullStream(inputStream);
 
-const [base_ast, transpiled_ast, code] = Transpile(inputBuffer.toString("utf-8"));
+const [base_ast, transpiled_ast, code] = transpile(inputBuffer.toString("utf-8"));
 
 // Write
 if (cli_args.debug) {

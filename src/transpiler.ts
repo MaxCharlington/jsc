@@ -4,7 +4,7 @@ import WalkAST from "./walker.js";
 import OptimizeAST from "./optimizer.js";
 import GenerateCode from "./generator.js";
 
-export default function Transpile (code: string): [string, string, string] {
+export function transpile (code: string): [string, string, string] {
     const ast = Acorn.parse(code, { ecmaVersion: 6 });
     const base_ast_str = JSON.stringify(ast, null, 4);
     try {

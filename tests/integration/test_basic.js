@@ -128,3 +128,12 @@ test("Function", async (t) => {
 test("console", async () => {
     assert.strictEqual(0, test_file("./sources/console.js"));
 });
+
+test("import", async (t) => {
+    await t.test("simple_import", () => {
+        assert.strictEqual(0, test_file("./sources/import/import.js"));  // depends on export.js
+    });
+    await t.test("folder_import", () => {
+        assert.strictEqual(0, test_file("./sources/import/import2.js"));  // depends on export/export.js
+    });
+});

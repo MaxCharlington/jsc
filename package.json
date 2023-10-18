@@ -17,7 +17,7 @@
     "app": "index.ts"
   },
   "scripts": {
-    "preinstall": "g++-13 --version && bun --version",
+    "preinstall": "g++-13 --version && bun --version && esbuild --version",
     "prebuild": "cmake -B build . -DBUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=build/install -DCMAKE_BUILD_TYPE=Release",
     "build": "cmake --build build/ --config Release",
     "pretest_build": "cmake -B build . -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=build/install",
@@ -35,8 +35,7 @@
     "acorn": "^8.8.1",
     "acorn-walk": "^8.2.0",
     "clang-format": "^1.8.0",
-    "commander": "^9.4.1",
-    "esbuild": "^0.19.2"
+    "commander": "^9.4.1"
   },
   "engines": {
     "bun": ">=1.0.2"

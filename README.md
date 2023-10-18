@@ -2,7 +2,7 @@
 
 ## Installation
 
-Basic intallation requires g++ >= 13, cmake >= 3.22, bun >= 1.0.2.
+Basic intallation requires g++ >= 13, cmake >= 3.22, bun >= 1.0.2, esbuild >= 0.19.5.
 
 Tests integration still rely on node test API.
 
