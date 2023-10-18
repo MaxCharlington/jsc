@@ -8,10 +8,11 @@ export function CallExpression (leaf, toString) {
 }
 
 export function NewExpression (leaf, toString) {
-    return `NectarCore::Operator::New(${toString(leaf.callee)})(${
-        toString({
-            type: "SequenceExpression",
-            expressions: leaf.arguments ?? []
-        })
-    })`;
+    throw new Error("new* not supported");
+    // return `New(${toString(leaf.callee)})(${
+    //     toString({
+    //         type: "SequenceExpression",
+    //         expressions: leaf.arguments ?? []
+    //     })
+    // })`;
 }
