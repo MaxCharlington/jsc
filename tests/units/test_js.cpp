@@ -3,6 +3,7 @@
 #include <vector>
 
 #include <dynamic_typing.hpp>
+#include <destructuring.hpp>
 #include <loops.hpp>
 
 using namespace DynamicTyping;
@@ -32,6 +33,11 @@ int main()
 #undef test
 #undef C
 
+    std::cout << "\nbasic loops\n";
+
+    for (var i = 0; i < 10; i = i + 1) {
+        std::cout << i << std::endl;
+    }
 
     std::cout << "\nsuccsessfull for of and for in tests:\n";
     {
@@ -48,8 +54,8 @@ int main()
         variable = object_t{{"name", "max"}, {"age", 23}};
         for_in(variable, [&](const string_t& key){ std::cout << key << ' ' << variable[key] << '\n'; });
     }
-    std::cout << "\nthrowing for of and for in tests:\n";
 
+    std::cout << "\nthrowing for of and for in tests:\n";
     {
         bool all_thrown = true;
         var not_compat = array_t{1, 1.6, nullptr, NaN, true, object_t{{"name", "max"}, {"age", 23}}};
@@ -83,9 +89,29 @@ int main()
         assert(no_thrown);
     }
 
-    std::cout << "\nbasic loops\n";
+    std::cout << "\ndestructuring tests:\n";
+    var arr = array_t{1, 2, "asdas", 4};
 
-    for (var i = 0; i < 10; i = i + 1) {
-        std::cout << i << std::endl;
-    }
+    int a, b;
+    std::string c;
+    tie(
+        tie_el(a, Unpack::Getters::path(0)),
+        tie_el(b, [](auto&& s){return std::string(s[2]).length(); }),  // Custom getter
+        tie_el(c, Unpack::Getters::path(2))
+    ) = arr;
+
+    std::cout << a << ' ' << b << ' ' << c << std::endl;
+
+    std::string name, tag;
+    int age;
+
+    var obj = object_t{{"name", "Max"}, {"tags", array_t{"man", "imployed", "developer"}}, {"age", 24}};
+
+    tie(
+        tie_el(name, Unpack::Getters::path("name")),
+        tie_el(tag, Unpack::Getters::path("tags", 0)),
+        tie_el(age, Unpack::Getters::path("age"))
+    ) = obj;
+
+    std::cout << name << ' ' << tag << ' ' << age << std::endl;
 }
