@@ -3,9 +3,11 @@
 #include <cstdint>
 #include <functional>
 #include <limits>
+#include <stdexcept>
 #include <string>
 #include <type_traits>
 #include <vector>
+#include <variant>
 
 #include <remove_all_const.hpp>
 
@@ -54,7 +56,7 @@ concept Arithmetic = std::is_arithmetic_v<std::remove_cvref_t<T>>;
 
 // String like types
 template <typename T>
-concept StringLike = std::is_same_v<std::remove_cvref_t<T>, string_t> ||  // std::string_view?
+concept StringLike = std::is_same_v<std::remove_cvref_t<T>, string_t> or  // std::string_view?
                      std::is_same_v<remove_all_const_t<std::decay_t<T>>, char*>;
 
 template <typename T>

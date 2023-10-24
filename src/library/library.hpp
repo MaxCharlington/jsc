@@ -1,5 +1,6 @@
 #pragma once
 
+#include <typing/destructuring.hpp>
 #include <typing/dynamic_typing.hpp>
 #include <typing/loops.hpp>
 #include <array.hpp>
