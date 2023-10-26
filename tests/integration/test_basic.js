@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 
 const test_dir = dirname(fileURLToPath(import.meta.url));
-const compiler_exe = "jsc";
+const compiler_exe = "bun run ../../index.ts";
 const compiled_exe = "./prog.out";
 
 function test_file(inputFile) {

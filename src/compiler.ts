@@ -47,7 +47,8 @@ export async function compile_cpp(cppSourcePath: string, outPath: string) {
         }
         else
         {
-            // DEBUG
+            // Case for debugging without building
+            //@ts-ignore
             libIncludeDir = path.join(import.meta.dir, "library");
         }
         const helpersIncludeDir = path.join(libIncludeDir, "..", "..", "deps", "helpers");
