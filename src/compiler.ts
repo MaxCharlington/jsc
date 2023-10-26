@@ -35,20 +35,15 @@ export function format_cpp(cppSourcePath: string) {
 const CXX = "g++-13";
 const CXX_FLAGS = "-std=c++23 -O3";
 
-async function libraryHeaderDirGetWorkaround(): Promise<string> {
-    // Workaround as Bun cannot get current executabe path
-    const pathToNearestPackageJson = await findUp("package.json");
-    if (pathToNearestPackageJson === undefined) {
-        throw new Error("Unable to find package.json in parent directory. Cannot resolve c++ library path");
-    }
-    const jscLibraryHeaderPathDir = path.join(dirname(pathToNearestPackageJson), "node_modules", "jsc", "dist");
-    return jscLibraryHeaderPathDir;
-}
-
 export async function compile_cpp(cppSourcePath: string, outPath: string) {
     try {
-        // Compile
-        execSync(`${CXX} ${cppSourcePath} -I ${await libraryHeaderDirGetWorkaround()} ${CXX_FLAGS} -o ${outPath}`);
+        // Workaround to get include paths from proxy script
+        if (process.env.INCLUDE_DIR === undefined) {
+            throw new Error("Include path env var undefined");
+        }
+        const libIncludeDir = process.env.INCLUDE_DIR;
+        const helpersIncludeDir = path.join(libIncludeDir, "..", "..", "deps", "helpers");
+        execSync(`${CXX} ${cppSourcePath} -I ${libIncludeDir} -I ${helpersIncludeDir} ${CXX_FLAGS} -o ${outPath}`);
     } catch (e: any) {
         console.error(e.stderr.toString());
         exit(1);

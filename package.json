@@ -14,10 +14,12 @@
   "homepage": "https://github.com/MaxCharlington/jsc#readme",
   "type": "module",
   "bin": {
-    "jsc": "dist/jsc"
+    "jsc": "scripts/jsc_proxy.sh"
   },
   "files": [
-    "dist/jsc.hpp"
+    "dist/jsc",
+    "src/library/",
+    "deps/helpers/"
   ],
   "scripts": {
     "preinstall": "g++-13 --version && bun --version && esbuild --version",
@@ -28,7 +30,7 @@
     "lint": "eslint --ext .js,.ts .",
     "validate": "tsc; bun run lint",
     "prebuild": "rm -rf dist && mkdir dist",
-    "build": "scripts/prepare_hpp.sh src/library/library.hpp && bun build index.ts --compile --minify --target=node --outfile=dist/jsc"
+    "build": "bun build index.ts --compile --minify --outfile=dist/jsc"
   },
   "dependencies": {
     "clang-format": "^1.8.0"
