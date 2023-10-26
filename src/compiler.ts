@@ -38,14 +38,22 @@ const CXX_FLAGS = "-std=c++23 -O3";
 export async function compile_cpp(cppSourcePath: string, outPath: string) {
     try {
         // Workaround to get include paths from proxy script
-        if (process.env.INCLUDE_DIR === undefined) {
+        // TODO: implement fully in terms of import.meta.dir when bun fixes bundle issue
+        let libIncludeDir;
+        if (process.env.INCLUDE_DIR !== undefined)
+        {
+            libIncludeDir = process.env.INCLUDE_DIR;
             throw new Error("Include path env var undefined");
         }
-        const libIncludeDir = process.env.INCLUDE_DIR;
+        else
+        {
+            // DEBUG
+            libIncludeDir = path.join(import.meta.dir, "library");
+        }
         const helpersIncludeDir = path.join(libIncludeDir, "..", "..", "deps", "helpers");
         execSync(`${CXX} ${cppSourcePath} -I ${libIncludeDir} -I ${helpersIncludeDir} ${CXX_FLAGS} -o ${outPath}`);
     } catch (e: any) {
-        console.error(e.stderr.toString());
+        console.error("Compile error:\n", e?.stderr?.toString() || `${e.name}:\n${e.message}`);
         exit(1);
     }
 }
