@@ -1,10 +1,9 @@
 import { exec, execSync } from "node:child_process";
 import { once } from "events";
 import { exit } from "process";
-import path, { dirname } from "node:path";
 import { ReadStream, WriteStream } from "node:fs";
 import { Buffer } from "node:buffer";
-import { findUp } from "find-up";
+import path from "node:path";
 
 export async function readFullStream(stream: ReadStream) {
     const chunks = [];
