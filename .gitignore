@@ -1,7 +1,6 @@
 .vscode/
-build/
-*.out
-*.gch
 node_modules
+dist/
 build/
 *.out
+*.tgz

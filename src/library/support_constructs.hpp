@@ -1,4 +1,4 @@
-#include <typing/dynamic_typing.hpp>
+#include "typing/dynamic_typing.hpp"
 
 template<typename T>
 struct is_array_or_vector : std::false_type {};

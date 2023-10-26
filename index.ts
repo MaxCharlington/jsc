@@ -11,7 +11,7 @@ const TMP_PATH = "/tmp/jsc-build";
 cli
     .name("jsc")
     .description("JavaScript compiler")
-    .version("0.1.0");
+    .version("0.2.0");
 
 let inputFilePath;
 cli
@@ -57,4 +57,4 @@ if (cli_args.debug) {
     format_cpp(cppSourcePath);
 }
 
-compile_cpp(cppSourcePath, cli_args.output);
+await compile_cpp(cppSourcePath, cli_args.output);
